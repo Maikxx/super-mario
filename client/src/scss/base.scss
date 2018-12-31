@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    font-family: inherit;
+    line-height: inherit;
+    color: inherit;
+    box-sizing: inherit;
+}
+
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+/*
+ * Give element block that are not block by default.
+ * This makes sure the parent div is the exact size of the element.
+ */
+label,
+img,
+audio,
+video,
+canvas,
+meter,
+progress,
+svg,
+iframe {
+    display: block;
+}
+
+button {
+    font-size: inherit;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ol, ul {
+    padding: 0;
+    list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100vh;
+    padding: 0;
+}
+
+body {
+    @import './variables/colors';
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    background-color: $color-white;
+    font-family: 'Raleway', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}

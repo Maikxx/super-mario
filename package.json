@@ -1,0 +1,11 @@
+{
+  "name": "super-mario",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start-client": "cd client && yarn start-client"
+  },
+  "author": "Maikel van Veen <maikeloo10@hotmail.com>",
+  "license": "MIT",
+  "devDependencies": {}
+}
