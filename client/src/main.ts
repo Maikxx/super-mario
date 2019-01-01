@@ -49,6 +49,7 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     timer.update = (deltaTime: number) => {
         mario.update(deltaTime)
         compositor.draw(context)
+        mario.velocity.x = mario.position.x
         mario.velocity.y += gravity
     }
     timer.start()
