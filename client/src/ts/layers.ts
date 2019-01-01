@@ -1,6 +1,6 @@
 import { LevelBackground } from '../types/Levels'
 import { SpriteSheet } from './SpriteSheet'
-import { SpritePosition } from '../types/Sprite'
+import { Entity } from './Entity'
 
 const drawBackground = (background: LevelBackground, context: CanvasRenderingContext2D, sprites: SpriteSheet) => {
     background.ranges.forEach(([ x1, x2, y1, y2 ]) => {
@@ -27,8 +27,8 @@ export const createBackgroundLayer = (backgrounds: LevelBackground[], sprites: S
     }
 }
 
-export const createSpriteLayer = (sprite: SpriteSheet, position: SpritePosition) => {
+export const createSpriteLayer = (entity: Entity) => {
     return (context: CanvasRenderingContext2D) => {
-        sprite.draw('idle', context, position.x, position.y)
+        entity.draw(context)
     }
 }
