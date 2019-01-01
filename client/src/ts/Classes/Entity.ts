@@ -1,4 +1,4 @@
-import { Vec2 } from '../math'
+import { Vec2 } from './Math'
 import { Trait } from './Trait'
 import { Jump } from '../Traits/Jump'
 
