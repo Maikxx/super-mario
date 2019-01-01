@@ -5,18 +5,16 @@ export const createMario = async () => {
     const sprite = await loadMarioSprite()
 
     const mario = new Entity()
-    mario.position.set(64, 180)
-    mario.velocity.set(2, -10)
 
     mario.draw = (context: CanvasRenderingContext2D) => {
         sprite.draw('idle', context, mario.position.x, mario.position.y)
     }
 
-    mario.update = () => {
+    mario.update = (deltaTime: number) => {
         const { x: vx, y: vy } = mario.velocity
 
-        mario.position.x += vx
-        mario.position.y += vy
+        mario.position.x += vx * deltaTime
+        mario.position.y += vy * deltaTime
     }
 
     return mario

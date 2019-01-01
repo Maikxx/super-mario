@@ -5,7 +5,7 @@ export class Entity {
     public velocity: Vec2
 
     public draw: (context: CanvasRenderingContext2D) => void
-    public update: () => void
+    public update: (deltaTime: number) => void
 
     constructor() {
         this.position = new Vec2(0, 0)
