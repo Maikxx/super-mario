@@ -35,4 +35,8 @@ export class SpriteSheet {
         const buffer = this.tiles.get(name) as HTMLCanvasElement
         context.drawImage(buffer, x, y)
     }
+
+    public drawTile = (name: string, context: CanvasRenderingContext2D, x: number, y: number) => {
+        this.draw(name, context, x * this.width, y * this.height)
+    }
 }
