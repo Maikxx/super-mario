@@ -27,8 +27,10 @@ export const createBackgroundLayer = (backgrounds: LevelBackground[], sprites: S
     }
 }
 
-export const createSpriteLayer = (entity: Entity) => {
+export const createSpriteLayer = (entities: Set<Entity>) => {
     return (context: CanvasRenderingContext2D) => {
-        entity.draw(context)
+        entities.forEach(entity => {
+            entity.draw(context)
+        })
     }
 }

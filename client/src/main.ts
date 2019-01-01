@@ -1,31 +1,23 @@
 import './scss/index.scss'
-import { loadBackgroundSprites } from './ts/sprites'
-import { levels } from './ts/levels'
-import { Compositor } from './ts/Classes/Compositor'
 import { createMario } from './ts/entities'
-import { createBackgroundLayer, createSpriteLayer } from './ts/layers'
 import { Timer } from './ts/Classes/Timer'
 import { KeyboardState } from './ts/Classes/KeyboardState'
+import { loadLevel } from './ts/loaders'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
 
 (async() => {
     // Initializers
-    const { levelOne } = levels
-    const [ mario, backgroundSprites ] = await Promise.all([
+    const [ mario, level ] = await Promise.all([
         createMario(),
-        loadBackgroundSprites(),
+        loadLevel('levelOne'),
     ])
 
-    // Compositor
-    const compositor = new Compositor()
-
-    const backgroundLayer = createBackgroundLayer(levelOne.backgrounds, backgroundSprites)
-    compositor.layers.push(backgroundLayer)
+    level.entities.add(mario)
 
     // Mario
-    const gravity = 30
+    const gravity = 2000
     mario.position.set(64, 180)
 
     // Interaction
@@ -40,17 +32,11 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     })
     input.listenTo(window)
 
-    const spriteLayer = createSpriteLayer(mario)
-    compositor.layers.push(spriteLayer)
-
-    compositor.draw(context)
-    // // Timer
     const timer = new Timer(1 / 60)
     timer.update = (deltaTime: number) => {
-        mario.update(deltaTime)
-        compositor.draw(context)
-        mario.velocity.x = mario.position.x
-        mario.velocity.y += gravity
+        level.update(deltaTime)
+        level.composition.draw(context)
+        mario.velocity.y += (gravity * deltaTime)
     }
     timer.start()
 })()
