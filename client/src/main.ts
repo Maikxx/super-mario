@@ -5,6 +5,7 @@ import { Compositor } from './ts/Classes/Compositor'
 import { createMario } from './ts/entities'
 import { createBackgroundLayer, createSpriteLayer } from './ts/layers'
 import { Timer } from './ts/Classes/Timer'
+import { KeyboardState } from './ts/Classes/KeyboardState'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -26,16 +27,28 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     // Mario
     const gravity = 30
     mario.position.set(64, 180)
-    mario.velocity.set(200, -600)
+
+    // Interaction
+    const SPACEBAR = 32
+    const input = new KeyboardState()
+    input.addMapping(SPACEBAR, (keyState: number) => {
+        if (keyState) {
+            mario.jump.start()
+        } else {
+            mario.jump.cancel()
+        }
+    })
+    input.listenTo(window)
 
     const spriteLayer = createSpriteLayer(mario)
     compositor.layers.push(spriteLayer)
 
-    // Timer
+    compositor.draw(context)
+    // // Timer
     const timer = new Timer(1 / 60)
     timer.update = (deltaTime: number) => {
-        compositor.draw(context)
         mario.update(deltaTime)
+        compositor.draw(context)
         mario.velocity.y += gravity
     }
     timer.start()
