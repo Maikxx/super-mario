@@ -1,4 +1,4 @@
-import { SpriteSheet } from './SpriteSheet'
+import { SpriteSheet } from './Classes/SpriteSheet'
 import TileSprites from '../../public/assets/tiles.png'
 import CharacterSprites from '../../public/assets/characters.gif'
 import { loadImage } from './loaders'

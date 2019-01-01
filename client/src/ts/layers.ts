@@ -1,6 +1,6 @@
 import { LevelBackground } from '../types/Levels'
-import { SpriteSheet } from './SpriteSheet'
-import { Entity } from './Entity'
+import { SpriteSheet } from './Classes/SpriteSheet'
+import { Entity } from './Classes/Entity'
 
 const drawBackground = (background: LevelBackground, context: CanvasRenderingContext2D, sprites: SpriteSheet) => {
     background.ranges.forEach(([ x1, x2, y1, y2 ]) => {

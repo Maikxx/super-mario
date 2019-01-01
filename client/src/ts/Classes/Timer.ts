@@ -1,11 +1,12 @@
 export class Timer {
     public update: (time: number) => void
+    public updateProxy: (time: number) => void
 
-    constructor(deltaTime: number = 1 / 60) {
+    constructor(deltaTime: number = (1 / 60)) {
         let accumulatedTime = 0
         let lastTime = 0
 
-        this.update = (time: number) => {
+        this.updateProxy = (time: number) => {
             accumulatedTime += (time - lastTime) / 1000
 
             while (accumulatedTime > deltaTime) {
@@ -19,7 +20,7 @@ export class Timer {
     }
 
     public enqueue = () => {
-        requestAnimationFrame(this.update)
+        requestAnimationFrame(this.updateProxy)
     }
 
     public start = () => {

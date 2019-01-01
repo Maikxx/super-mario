@@ -1,4 +1,4 @@
-import { Vec2 } from './math'
+import { Vec2 } from '../math'
 
 export class Entity {
     public position: Vec2
