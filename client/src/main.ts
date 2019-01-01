@@ -1,21 +1,37 @@
 import './scss/index.scss'
-import TilesImage from '../public/assets/tiles.png'
-import { SpriteSheet } from './ts/SpriteSheet'
-import { loadImage, loadLevels } from './ts/loaders'
-import { drawBackground } from './ts/draw'
+import { loadBackgroundSprites, loadMarioSprite } from './ts/sprites'
+import { levels } from './ts/levels'
+import { Compositor } from './ts/Compositor'
+import { createBackgroundLayer, createSpriteLayer } from './ts/layers'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
 
-; (async() => {
-    const image = await loadImage(TilesImage)
-    const sprites = new SpriteSheet(image, 16, 16)
-    sprites.define('ground', 0, 0)
-    sprites.define('sky', 3, 23)
+(async() => {
+    const { levelOne } = levels
+    const [ backgroundSprites, marioSprite ] = await Promise.all([
+        loadBackgroundSprites(),
+        loadMarioSprite(),
+    ])
 
-    const levels = loadLevels()
-    const levelOne = levels.levelOne
-    levelOne.backgrounds.forEach(background => {
-        drawBackground(background, context, sprites)
-    })
+    const compositor = new Compositor()
+    const backgroundLayer = createBackgroundLayer(levelOne.backgrounds, backgroundSprites)
+    compositor.layers.push(backgroundLayer)
+
+    const position = {
+        x: 64,
+        y: 64,
+    }
+
+    const spriteLayer = createSpriteLayer(marioSprite, position)
+    compositor.layers.push(spriteLayer)
+
+    const update = () => {
+        compositor.draw(context)
+        position.x += 2
+        position.y += 2
+        requestAnimationFrame(update)
+    }
+
+    update()
 })()
