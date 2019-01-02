@@ -1,0 +1,9 @@
+{
+    "imageName": "characters",
+    "frames": [
+        {
+            "name": "idle",
+            "boundingBox": [276, 44, 16, 16]
+        }
+    ]
+}

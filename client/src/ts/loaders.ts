@@ -1,5 +1,5 @@
 import { levels } from './bundling/levels'
-import { spriteSheetSpecifications } from './sprites'
+import { spriteSheetSpecifications } from './bundling/sprites'
 import { Level } from './Classes/Level'
 import { createBackgroundLayer, createSpriteLayer, createCollisionLayer, createCameraLayer } from './layers'
 import { LevelSpecificationBackground } from '../types/Levels'
@@ -17,23 +17,29 @@ export const loadImage = (url: string): Promise<HTMLImageElement> => {
     })
 }
 
-const loadSpriteSheet = async (name: string) => {
+export const loadSpriteSheet = async (name: string) => {
     const spriteSheetSpecification = spriteSheetSpecifications[name]
-    const { tileWidth, tileHeight, imageName, tiles } = spriteSheetSpecification
+    const { tileWidth, tileHeight, imageName, tiles, frames } = spriteSheetSpecification
 
     const image = await loadImage(images[imageName])
-    const sprites = new SpriteSheet(
-        image,
-        tileWidth,
-        tileHeight
-    )
-    tiles.forEach(tileSpecification => {
-        sprites.defineTile(
-            tileSpecification.name,
-            tileSpecification.index[0],
-            tileSpecification.index[1]
-        )
-    })
+    const sprites = new SpriteSheet(image, tileWidth || 16, tileHeight || 16)
+
+    if (tiles) {
+        tiles.forEach(tileSpecification => {
+            sprites.defineTile(
+                tileSpecification.name,
+                tileSpecification.index[0],
+                tileSpecification.index[1]
+            )
+        })
+    }
+
+    if (frames) {
+        frames.forEach(frameSpecification => {
+            const { name, boundingBox: [ x, y, width, height ] } = frameSpecification
+            sprites.define(name, x, y, width, height)
+        })
+    }
 
     return sprites
 }

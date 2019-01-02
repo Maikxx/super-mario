@@ -1,11 +1,10 @@
-import { loadMarioSprite } from './sprites'
 import { Entity } from './Classes/Entity'
 import { Jump } from './Traits/Jump'
 import { Run } from './Traits/Run'
+import { loadSpriteSheet } from './loaders'
 
 export const createMario = async () => {
-    const sprite = await loadMarioSprite()
-
+    const sprite = await loadSpriteSheet('mario')
     const mario = new Entity()
 
     mario.size.set(14, 16)
