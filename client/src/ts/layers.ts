@@ -5,17 +5,49 @@ import { Coordinate } from '../types/Coordinate'
 import { Camera } from './Classes/Camera'
 
 export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
+    const { tiles, tileCollider } = level
+    const resolver = tileCollider.tiles
+
     const buffer = document.createElement('canvas') as HTMLCanvasElement
     const bufferContext = buffer.getContext('2d') as CanvasRenderingContext2D
-    buffer.width = 640
-    buffer.height = 640
+    buffer.width = 640 + 16
+    buffer.height = 320
+
+    let startIndex: number
+    let endIndex: number
+    const redraw = (drawFrom: number, drawTo: number) => {
+        if (drawFrom === startIndex && drawTo === endIndex) {
+            return
+        }
+
+        startIndex = drawFrom
+        endIndex = drawTo
+
+        for (let x = startIndex; x < endIndex; x++) {
+            const column = tiles.grid[x]
+            if (column) {
+                column.forEach((tile, y) => {
+                    sprites.drawTile(tile.name, bufferContext, x - startIndex, y)
+                })
+            }
+        }
+    }
 
     level.tiles.forEach((tile, x, y) => {
         sprites.drawTile(tile.name, bufferContext, x, y)
     })
 
     return (context: CanvasRenderingContext2D, camera: Camera) => {
-        context.drawImage(buffer, -camera.position.x, -camera.position.y)
+        const drawWith = resolver.toIndex(camera.size.x)
+        const drawFrom = resolver.toIndex(camera.position.x)
+        const drawTo = drawFrom + drawWith
+        redraw(drawFrom, drawTo)
+
+        context.drawImage(
+            buffer,
+            -camera.position.x % 16,
+            -camera.position.y
+        )
     }
 }
 
@@ -77,5 +109,18 @@ export const createCollisionLayer = (level: Level) => {
         })
 
         resolvedTiles.length = 0
+    }
+}
+
+export const createCameraLayer = (cameraToDraw: Camera) => {
+    return (context: CanvasRenderingContext2D, fromCamera: Camera) => {
+        context.strokeStyle = 'purple'
+        context.beginPath()
+        context.rect(
+            cameraToDraw.position.x - fromCamera.position.x,
+            cameraToDraw.position.y - fromCamera.position.y,
+            cameraToDraw.size.x, cameraToDraw.size.y
+        )
+        context.stroke()
     }
 }

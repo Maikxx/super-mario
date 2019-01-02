@@ -1,10 +1,11 @@
 import { levels } from './bundling/levels'
 import { spriteSheetSpecifications } from './sprites'
 import { Level } from './Classes/Level'
-import { createBackgroundLayer, createSpriteLayer, createCollisionLayer } from './layers'
+import { createBackgroundLayer, createSpriteLayer, createCollisionLayer, createCameraLayer } from './layers'
 import { LevelSpecificationBackground } from '../types/Levels'
 import { SpriteSheet } from './Classes/SpriteSheet'
 import { images } from './bundling/images'
+import { Camera } from './Classes/Camera'
 
 export const loadImage = (url: string): Promise<HTMLImageElement> => {
     return new Promise(resolve => {
@@ -68,7 +69,7 @@ export const createTiles = (level: Level, backgrounds: LevelSpecificationBackgro
     })
 }
 
-export const loadLevel = async (name: string) => {
+export const loadLevel = async (name: string, camera: Camera) => {
     const levelSpec = levels[name]
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
@@ -76,13 +77,11 @@ export const loadLevel = async (name: string) => {
     createTiles(level, levelSpec.backgrounds)
 
     const backgroundLayer = createBackgroundLayer(level, backgroundSprites)
-    level.composition.layers.push(backgroundLayer)
-
     const spriteLayer = createSpriteLayer(level.entities)
-    level.composition.layers.push(spriteLayer)
-
     const collisionLayer = createCollisionLayer(level)
-    level.composition.layers.push(collisionLayer)
+    const cameraLayer = createCameraLayer(camera)
+
+    level.composition.layers.push(backgroundLayer, spriteLayer, collisionLayer, cameraLayer)
 
     return level
 }
