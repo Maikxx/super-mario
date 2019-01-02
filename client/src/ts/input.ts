@@ -2,9 +2,9 @@ import { KeyboardState } from './Classes/KeyboardState'
 import { Entity } from './Classes/Entity'
 
 export const setupInputHandler = (entity: Entity) => {
-    const SPACEBAR = 32
-    const LEFT_ARROW = 37
-    const RIGHT_ARROW = 39
+    const SPACEBAR = 'Space'
+    const LEFT_ARROW = 'ArrowLeft'
+    const RIGHT_ARROW = 'ArrowRight'
     const input = new KeyboardState()
 
     input.addMapping(SPACEBAR, (keyState: number) => {
@@ -14,11 +14,13 @@ export const setupInputHandler = (entity: Entity) => {
             entity.jump.cancel()
         }
     })
-    input.addMapping(RIGHT_ARROW, (keyState: number) => {
-        entity.run.direction = keyState
-    })
+
     input.addMapping(LEFT_ARROW, (keyState: number) => {
         entity.run.direction = -keyState
+    })
+
+    input.addMapping(RIGHT_ARROW, (keyState: number) => {
+        entity.run.direction = keyState
     })
 
     return input
