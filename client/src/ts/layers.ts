@@ -1,25 +1,15 @@
-import { LevelBackground } from '../types/Levels'
 import { SpriteSheet } from './Classes/SpriteSheet'
 import { Entity } from './Classes/Entity'
+import { Level } from './Classes/Level'
 
-const drawBackground = (background: LevelBackground, context: CanvasRenderingContext2D, sprites: SpriteSheet) => {
-    background.ranges.forEach(([ x1, x2, y1, y2 ]) => {
-        for (let x = x1; x < x2; x++) {
-            for (let y = y1; y < y2; y++) {
-                sprites.drawTile(background.tile, context, x, y)
-            }
-        }
-    })
-}
-
-export const createBackgroundLayer = (backgrounds: LevelBackground[], sprites: SpriteSheet) => {
+export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
     const buffer = document.createElement('canvas') as HTMLCanvasElement
     const bufferContext = buffer.getContext('2d') as CanvasRenderingContext2D
     buffer.width = 640
     buffer.height = 640
 
-    backgrounds.forEach(background => {
-        drawBackground(background, bufferContext, sprites)
+    level.tiles.forEach((tile, x, y) => {
+        sprites.drawTile(tile.name, bufferContext, x, y)
     })
 
     return (context: CanvasRenderingContext2D) => {
