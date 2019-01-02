@@ -8,15 +8,15 @@ export interface ResolvedTile {
     x2: number
 }
 
-export interface LevelBackground {
+export interface LevelSpecificationBackground {
     tile: string
     ranges: number[][]
 }
 
-export interface Level {
-    backgrounds: LevelBackground[]
+export interface LevelSpecification {
+    backgrounds: LevelSpecificationBackground[]
 }
 
-export interface Levels {
-    [key: string]: Level
+export interface LevelSpecifications {
+    [key: string]: LevelSpecification
 }

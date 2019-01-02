@@ -1,8 +1,10 @@
-import { levels } from './levels'
-import { loadBackgroundSprites } from './sprites'
+import { levels } from './bundling/levels'
+import { spriteSheetSpecifications } from './sprites'
 import { Level } from './Classes/Level'
 import { createBackgroundLayer, createSpriteLayer, createCollisionLayer } from './layers'
-import { LevelBackground } from '../types/Levels'
+import { LevelSpecificationBackground } from '../types/Levels'
+import { SpriteSheet } from './Classes/SpriteSheet'
+import { images } from './bundling/images'
 
 export const loadImage = (url: string): Promise<HTMLImageElement> => {
     return new Promise(resolve => {
@@ -14,8 +16,29 @@ export const loadImage = (url: string): Promise<HTMLImageElement> => {
     })
 }
 
-export const createTiles = (level: Level, backgrounds: LevelBackground[]) => {
-    const applyRange = (background: LevelBackground, xStart: number, xLength: number, yStart: number, yLength: number) => {
+const loadSpriteSheet = async (name: string) => {
+    const spriteSheetSpecification = spriteSheetSpecifications[name]
+    const { tileWidth, tileHeight, imageName, tiles } = spriteSheetSpecification
+
+    const image = await loadImage(images[imageName])
+    const sprites = new SpriteSheet(
+        image,
+        tileWidth,
+        tileHeight
+    )
+    tiles.forEach(tileSpecification => {
+        sprites.defineTile(
+            tileSpecification.name,
+            tileSpecification.index[0],
+            tileSpecification.index[1]
+        )
+    })
+
+    return sprites
+}
+
+export const createTiles = (level: Level, backgrounds: LevelSpecificationBackground[]) => {
+    const applyRange = (background: LevelSpecificationBackground, xStart: number, xLength: number, yStart: number, yLength: number) => {
         const xEnd = xStart + xLength
         const yEnd = yStart + yLength
 
@@ -47,7 +70,7 @@ export const createTiles = (level: Level, backgrounds: LevelBackground[]) => {
 export const loadLevel = async (name: string) => {
     const levelSpec = levels[name]
     const level = new Level()
-    const backgroundSprites = await loadBackgroundSprites()
+    const backgroundSprites = await loadSpriteSheet('overworld')
 
     createTiles(level, levelSpec.backgrounds)
 
