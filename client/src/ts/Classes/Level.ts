@@ -8,8 +8,10 @@ export class Level {
     public entities: Set<Entity>
     public tiles: Matrix
     public tileCollider: TileCollider
+    private gravity: number
 
     constructor() {
+        this.gravity = 2000
         this.composition = new Compositor()
         this.entities = new Set()
         this.tiles = new Matrix()
@@ -26,6 +28,8 @@ export class Level {
 
             entity.position.y += entity.velocity.y * deltaTime
             this.tileCollider.checkY(entity)
+
+            entity.velocity.y += (this.gravity * deltaTime)
         })
     }
 }

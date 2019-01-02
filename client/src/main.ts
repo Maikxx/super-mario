@@ -20,7 +20,6 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     debugCollision(canvas, mario)
 
     // Mario
-    const gravity = 2000
     mario.position.set(64, 180)
 
     // Interaction
@@ -31,7 +30,6 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     timer.update = (deltaTime: number) => {
         level.update(deltaTime)
         level.composition.draw(context)
-        mario.velocity.y += (gravity * deltaTime)
     }
     timer.start()
 })()
