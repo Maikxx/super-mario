@@ -70,7 +70,7 @@ export const createTiles = (level: Level, backgrounds: LevelSpecificationBackgro
 export const loadLevel = async (name: string) => {
     const levelSpec = levels[name]
     const level = new Level()
-    const backgroundSprites = await loadSpriteSheet('overworld')
+    const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 
     createTiles(level, levelSpec.backgrounds)
 

@@ -14,6 +14,7 @@ export interface LevelSpecificationBackground {
 }
 
 export interface LevelSpecification {
+    spriteSheet: string
     backgrounds: LevelSpecificationBackground[]
 }
 

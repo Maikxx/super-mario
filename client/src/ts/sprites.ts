@@ -1,11 +1,13 @@
 import { SpriteSheet } from './Classes/SpriteSheet'
-import OverworldSprite from '../../public/sprites/overworld.json'
+import OverworldSprite from '../sprites/overworld.json'
+import UnderWorldSprite from '../sprites/underworld.json'
 import CharacterSprites from '../../public/assets/characters.gif'
 import { loadImage } from './loaders'
 import { SpriteSheetSpecifications } from '../types/Sprite'
 
 export const spriteSheetSpecifications = {
     overworld: OverworldSprite,
+    underworld: UnderWorldSprite,
 } as SpriteSheetSpecifications
 
 export const loadMarioSprite = async (): Promise<SpriteSheet> => {
