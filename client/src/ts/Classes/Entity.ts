@@ -1,12 +1,14 @@
 import { Vec2 } from './Math'
 import { Trait } from './Trait'
 import { Jump } from '../Traits/Jump'
+import { Run } from '../Traits/Run'
 
 export class Entity {
     public position: Vec2
     public velocity: Vec2
     public size: Vec2
     public traits: Trait[]
+    public run: Run
     public jump: Jump
 
     public draw: (context: CanvasRenderingContext2D) => void

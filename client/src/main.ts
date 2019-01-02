@@ -25,6 +25,8 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
 
     // Interaction
     const SPACEBAR = 32
+    const LEFT_ARROW = 37
+    const RIGHT_ARROW = 39
     const input = new KeyboardState()
     input.addMapping(SPACEBAR, (keyState: number) => {
         if (keyState) {
@@ -32,6 +34,12 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
         } else {
             mario.jump.cancel()
         }
+    })
+    input.addMapping(RIGHT_ARROW, (keyState: number) => {
+        mario.run.direction = keyState
+    })
+    input.addMapping(LEFT_ARROW, (keyState: number) => {
+        mario.run.direction = -keyState
     })
     input.listenTo(window)
 
