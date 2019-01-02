@@ -3,6 +3,7 @@
     "backgrounds": [
         {
             "tile": "sky",
+            "type": "sky",
             "ranges": [
                 [
                     0, 40,
@@ -12,6 +13,7 @@
         },
         {
             "tile": "ground",
+            "type": "ground",
             "ranges": [
                 [
                     0, 40,
@@ -21,6 +23,7 @@
         },
         {
             "tile": "sky",
+            "type": "sky",
             "ranges": [
                 [
                     20, 4,

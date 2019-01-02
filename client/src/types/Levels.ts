@@ -10,6 +10,7 @@ export interface ResolvedTile {
 
 export interface LevelSpecificationBackground {
     tile: string
+    type: string
     ranges: number[][]
 }
 

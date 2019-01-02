@@ -29,7 +29,7 @@ export class TileCollider {
                 return
             }
 
-            if (match.tile.name !== 'ground') {
+            if (match.tile.type !== 'ground') {
                 return
             }
 
@@ -67,7 +67,7 @@ export class TileCollider {
                 return
             }
 
-            if (match.tile.name !== 'ground') {
+            if (match.tile.type !== 'ground') {
                 return
             }
 

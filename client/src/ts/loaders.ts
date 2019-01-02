@@ -46,6 +46,7 @@ export const createTiles = (level: Level, backgrounds: LevelSpecificationBackgro
             for (let y = yStart; y < yEnd; y++) {
                 level.tiles.set(x, y, {
                     name: background.tile,
+                    type: background.type,
                 })
             }
         }
