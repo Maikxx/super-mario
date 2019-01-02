@@ -5,6 +5,7 @@ import { Jump } from '../Traits/Jump'
 export class Entity {
     public position: Vec2
     public velocity: Vec2
+    public size: Vec2
     public traits: Trait[]
     public jump: Jump
 
@@ -13,6 +14,7 @@ export class Entity {
     constructor() {
         this.position = new Vec2(0, 0)
         this.velocity = new Vec2(0, 0)
+        this.size = new Vec2(0, 0)
         this.traits = []
     }
 

@@ -8,8 +8,10 @@ export const createMario = async () => {
 
     const mario = new Entity()
 
-    mario.addTrait(new Velocity())
+    mario.size.set(14, 16)
+
     mario.addTrait(new Jump())
+    mario.addTrait(new Velocity())
 
     mario.draw = (context: CanvasRenderingContext2D) => {
         sprite.draw('idle', context, mario.position.x, mario.position.y)

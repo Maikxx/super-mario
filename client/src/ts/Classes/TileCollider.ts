@@ -9,11 +9,36 @@ export class TileCollider {
         this.tiles = new TileResolver(tiles)
     }
 
-    public test = (entity: Entity) => {
-        const match = this.tiles.matchByPosition(entity.position.x, entity.position.y)
+    public checkY = (entity: Entity) => {
+        const matches = this.tiles.searchByRange(
+            entity.position.x, entity.position.x + entity.size.x,
+            entity.position.y, entity.position.y + entity.size.y
+        )
 
-        if (match) {
-            console.log(match, match.tile)
-        }
+        matches.forEach(match => {
+            if (!match) {
+                return
+            }
+
+            if (match.tile.name !== 'ground') {
+                return
+            }
+
+            if (entity.velocity.y > 0) {
+                if (entity.position.y + entity.size.y > match.y1) {
+                    entity.position.y = match.y1 - entity.size.y
+                    entity.velocity.y = 0
+                }
+            } else if (entity.velocity.y < 0) {
+                if (entity.position.y < match.y2) {
+                    entity.position.y = match.y2
+                    entity.velocity.y = 0
+                }
+            }
+        })
+    }
+
+    public test = (entity: Entity) => {
+        this.checkY(entity)
     }
 }

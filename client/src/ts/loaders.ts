@@ -1,7 +1,7 @@
 import { levels } from './levels'
 import { loadBackgroundSprites } from './sprites'
 import { Level } from './Classes/Level'
-import { createBackgroundLayer, createSpriteLayer } from './layers'
+import { createBackgroundLayer, createSpriteLayer, createCollisionLayer } from './layers'
 import { LevelBackground } from '../types/Levels'
 
 export const loadImage = (url: string): Promise<HTMLImageElement> => {
@@ -40,6 +40,9 @@ export const loadLevel = async (name: string) => {
 
     const spriteLayer = createSpriteLayer(level.entities)
     level.composition.layers.push(spriteLayer)
+
+    const collisionLayer = createCollisionLayer(level)
+    level.composition.layers.push(collisionLayer)
 
     return level
 }
