@@ -4,6 +4,7 @@ import { Timer } from './ts/Classes/Timer'
 import { loadLevel } from './ts/loaders'
 import { debugCollision } from './ts/debug'
 import { setupInputHandler } from './ts/input'
+import { Camera } from './ts/Classes/Camera'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -15,9 +16,11 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
         loadLevel('levelOne'),
     ])
 
+    const camera = new Camera()
+
     level.entities.add(mario)
 
-    debugCollision(canvas, mario)
+    debugCollision(canvas, mario, camera)
 
     // Mario
     mario.position.set(64, 180)
@@ -29,7 +32,7 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     const timer = new Timer(1 / 60)
     timer.update = (deltaTime: number) => {
         level.update(deltaTime)
-        level.composition.draw(context)
+        level.composition.draw(context, camera)
     }
     timer.start()
 })()

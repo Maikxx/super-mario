@@ -15,7 +15,7 @@ export const createMario = async () => {
     // mario.addTrait(new Velocity())
 
     mario.draw = (context: CanvasRenderingContext2D) => {
-        sprite.draw('idle', context, mario.position.x, mario.position.y)
+        sprite.draw('idle', context, 0, 0)
     }
 
     return mario
