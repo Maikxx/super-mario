@@ -1,13 +1,5 @@
 import { Matrix } from './Math'
-import { Grid } from '../../types/Matrix'
-
-interface ResolvedTile {
-    tile: Grid
-    y1: number
-    y2: number
-    x1: number
-    x2: number
-}
+import { ResolvedTile } from '../../types/Levels'
 
 export class TileResolver {
     public matrix: Matrix
