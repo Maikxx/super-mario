@@ -3,6 +3,7 @@ import { createMario } from './ts/entities'
 import { Timer } from './ts/Classes/Timer'
 import { KeyboardState } from './ts/Classes/KeyboardState'
 import { loadLevel } from './ts/loaders'
+import { debugCollision } from './ts/debug'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -15,6 +16,8 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     ])
 
     level.entities.add(mario)
+
+    debugCollision(canvas, mario)
 
     // Mario
     const gravity = 2000
