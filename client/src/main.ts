@@ -1,9 +1,9 @@
 import './scss/index.scss'
 import { createMario } from './ts/entities'
 import { Timer } from './ts/Classes/Timer'
-import { KeyboardState } from './ts/Classes/KeyboardState'
 import { loadLevel } from './ts/loaders'
 import { debugCollision } from './ts/debug'
+import { setupInputHandler } from './ts/input'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -24,23 +24,7 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     mario.position.set(64, 180)
 
     // Interaction
-    const SPACEBAR = 32
-    const LEFT_ARROW = 37
-    const RIGHT_ARROW = 39
-    const input = new KeyboardState()
-    input.addMapping(SPACEBAR, (keyState: number) => {
-        if (keyState) {
-            mario.jump.start()
-        } else {
-            mario.jump.cancel()
-        }
-    })
-    input.addMapping(RIGHT_ARROW, (keyState: number) => {
-        mario.run.direction = keyState
-    })
-    input.addMapping(LEFT_ARROW, (keyState: number) => {
-        mario.run.direction = -keyState
-    })
+    const input = setupInputHandler(mario)
     input.listenTo(window)
 
     const timer = new Timer(1 / 60)
