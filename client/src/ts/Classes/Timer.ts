@@ -9,6 +9,11 @@ export class Timer {
         this.updateProxy = (time: number) => {
             accumulatedTime += (time - lastTime) / 1000
 
+            // Temp fix for memory issues
+            if (accumulatedTime > 1) {
+                accumulatedTime = 1
+            }
+
             while (accumulatedTime > deltaTime) {
                 this.update(deltaTime)
                 accumulatedTime -= deltaTime

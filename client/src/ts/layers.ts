@@ -5,35 +5,38 @@ import { Coordinate } from '../types/Coordinate'
 import { Camera } from './Classes/Camera'
 
 export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
-    const { tiles, tileCollider } = level
+    const { tiles, tileCollider, totalTimePassed } = level
     const resolver = tileCollider.tiles
-
     const buffer = document.createElement('canvas') as HTMLCanvasElement
     const bufferContext = buffer.getContext('2d') as CanvasRenderingContext2D
+
     buffer.width = 640 + 16
     buffer.height = 320
 
     let startIndex: number
     let endIndex: number
     const redraw = (drawFrom: number, drawTo: number) => {
-        if (drawFrom === startIndex && drawTo === endIndex) {
-            return
-        }
-
         startIndex = drawFrom
         endIndex = drawTo
 
         for (let x = startIndex; x < endIndex; x++) {
             const column = tiles.grid[x]
+
             if (column) {
                 column.forEach((tile, y) => {
-                    sprites.drawTile(tile.name, bufferContext, x - startIndex, y)
+                    const { name } = tile
+
+                    if (sprites.animations.has(name)) {
+                        sprites.drawAnimation(name, bufferContext, x - startIndex, y, totalTimePassed)
+                    } else {
+                        sprites.drawTile(name, bufferContext, x - startIndex, y)
+                    }
                 })
             }
         }
     }
 
-    level.tiles.forEach((tile, x, y) => {
+    tiles.forEach((tile, x, y) => {
         sprites.drawTile(tile.name, bufferContext, x, y)
     })
 
@@ -41,6 +44,7 @@ export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
         const drawWith = resolver.toIndex(camera.size.x)
         const drawFrom = resolver.toIndex(camera.position.x)
         const drawTo = drawFrom + drawWith
+
         redraw(drawFrom, drawTo)
 
         context.drawImage(
@@ -53,9 +57,10 @@ export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
 
 export const createSpriteLayer = (entities: Set<Entity>, width: number = 64, height: number = 64) => {
     const spriteBuffer = document.createElement('canvas') as HTMLCanvasElement
+    const spriteBufferContext = spriteBuffer.getContext('2d') as CanvasRenderingContext2D
+
     spriteBuffer.width = width
     spriteBuffer.height = height
-    const spriteBufferContext = spriteBuffer.getContext('2d') as CanvasRenderingContext2D
 
     return (context: CanvasRenderingContext2D, camera: Camera) => {
         entities.forEach(entity => {
@@ -74,11 +79,10 @@ export const createSpriteLayer = (entities: Set<Entity>, width: number = 64, hei
 
 export const createCollisionLayer = (level: Level) => {
     const resolvedTiles = [] as Coordinate[]
-
     const tileResolver = level.tileCollider.tiles
     const tileSize = tileResolver.tileSize
-
     const getByIndexOriginal = tileResolver.getByIndex
+
     tileResolver.getByIndex = (x: number, y: number) => {
         resolvedTiles.push({ x, y })
         return getByIndexOriginal.call(tileResolver, x, y)

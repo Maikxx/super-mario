@@ -8,6 +8,7 @@ export class Level {
     public entities: Set<Entity>
     public tiles: Matrix
     public tileCollider: TileCollider
+    public totalTimePassed: number
     private gravity: number
 
     constructor() {
@@ -15,8 +16,8 @@ export class Level {
         this.composition = new Compositor()
         this.entities = new Set()
         this.tiles = new Matrix()
-
         this.tileCollider = new TileCollider(this.tiles)
+        this.totalTimePassed = 0
     }
 
     public update = (deltaTime: number) => {
@@ -31,5 +32,7 @@ export class Level {
 
             entity.velocity.y += (this.gravity * deltaTime)
         })
+
+        this.totalTimePassed += deltaTime
     }
 }

@@ -6,6 +6,7 @@ import { LevelSpecificationBackground } from '../types/Levels'
 import { SpriteSheet } from './Classes/SpriteSheet'
 import { images } from './bundling/images'
 import { Camera } from './Classes/Camera'
+import { createAnimation } from './animation'
 
 export const loadImage = (url: string): Promise<HTMLImageElement> => {
     return new Promise(resolve => {
@@ -19,7 +20,7 @@ export const loadImage = (url: string): Promise<HTMLImageElement> => {
 
 export const loadSpriteSheet = async (name: string) => {
     const spriteSheetSpecification = spriteSheetSpecifications[name]
-    const { tileWidth, tileHeight, imageName, tiles, frames } = spriteSheetSpecification
+    const { tileWidth, tileHeight, imageName, tiles, frames, animations } = spriteSheetSpecification
 
     const image = await loadImage(images[imageName])
     const sprites = new SpriteSheet(image, tileWidth || 16, tileHeight || 16)
@@ -38,6 +39,14 @@ export const loadSpriteSheet = async (name: string) => {
         frames.forEach(frameSpecification => {
             const { name, boundingBox: [ x, y, width, height ] } = frameSpecification
             sprites.define(name, x, y, width, height)
+        })
+    }
+
+    if (animations) {
+        animations.forEach(animationSpecification => {
+            const { name, frameLength, frames } = animationSpecification
+            const animation = createAnimation(frames, frameLength)
+            sprites.defineAnimation(name, animation)
         })
     }
 
@@ -63,12 +72,15 @@ export const createTiles = (level: Level, backgrounds: LevelSpecificationBackgro
         background.ranges.forEach(range => {
             if (range.length === 2) {
                 const [ xStart, yStart ] = range
+
                 applyRange(background, xStart, 1, yStart, 1)
             } else if (range.length === 3) {
                 const [ xStart, xLength, yStart ] = range
+
                 applyRange(background, xStart, xLength, yStart, 1)
             } else if (range.length === 4) {
                 const [ xStart, xLength, yStart, yLength ] = range
+
                 applyRange(background, xStart, xLength, yStart, yLength)
             }
         })

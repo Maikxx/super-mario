@@ -1,4 +1,5 @@
 export class SpriteSheet {
+    public animations: Map<string, (distance: number) => string>
     private image: HTMLImageElement
     private width: number
     private height: number
@@ -9,6 +10,11 @@ export class SpriteSheet {
         this.width = width
         this.height = height
         this.tiles = new Map()
+        this.animations = new Map()
+    }
+
+    public defineAnimation = (name: string, animation: (distance: number) => string) => {
+        this.animations.set(name, animation)
     }
 
     public define = (name: string, x: number, y: number, width: number, height: number) => {
@@ -49,6 +55,14 @@ export class SpriteSheet {
         const buffer = this.tiles.get(name) as HTMLCanvasElement[]
         const usableBuffer = buffer && buffer[isFlipped ? 0 : 1]
         context.drawImage(usableBuffer, x, y)
+    }
+
+    public drawAnimation = (name: string, context: CanvasRenderingContext2D, x: number, y: number, distance: number) => {
+        const animation = this.animations.get(name)
+
+        if (animation) {
+            this.drawTile(animation(distance), context, x, y)
+        }
     }
 
     public drawTile = (name: string, context: CanvasRenderingContext2D, x: number, y: number) => {
