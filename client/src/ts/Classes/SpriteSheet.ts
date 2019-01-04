@@ -2,7 +2,7 @@ export class SpriteSheet {
     private image: HTMLImageElement
     private width: number
     private height: number
-    private tiles: Map<string, HTMLCanvasElement>
+    private tiles: Map<string, HTMLCanvasElement[]>
 
     constructor(image: HTMLImageElement, width: number, height: number) {
         this.image = image
@@ -12,32 +12,43 @@ export class SpriteSheet {
     }
 
     public define = (name: string, x: number, y: number, width: number, height: number) => {
-        const buffer = document.createElement('canvas')
-        buffer.width = width
-        buffer.height = height
-        const context = buffer.getContext('2d') as CanvasRenderingContext2D
-        context.drawImage(
-            this.image,
-            x,
-            y,
-            width,
-            height,
-            0,
-            0,
-            width,
-            height
-        )
+        const buffers = [ true, false ].map(isFlipped => {
+            const buffer = document.createElement('canvas')
+            buffer.width = width
+            buffer.height = height
+            const context = buffer.getContext('2d') as CanvasRenderingContext2D
 
-        this.tiles.set(name, buffer)
+            if (isFlipped) {
+                context.scale(-1, 1)
+                context.translate(-width, 0)
+            }
+
+            context.drawImage(
+                this.image,
+                x,
+                y,
+                width,
+                height,
+                0,
+                0,
+                width,
+                height
+            )
+
+            return buffer
+        })
+
+        this.tiles.set(name, buffers)
     }
 
     public defineTile = (name: string, x: number, y: number) => {
         this.define(name, x * this.width, y * this.height, this.width, this.height)
     }
 
-    public draw = (name: string, context: CanvasRenderingContext2D, x: number, y: number) => {
-        const buffer = this.tiles.get(name) as HTMLCanvasElement
-        context.drawImage(buffer, x, y)
+    public draw = (name: string, context: CanvasRenderingContext2D, x: number, y: number, isFlipped: boolean = false) => {
+        const buffer = this.tiles.get(name) as HTMLCanvasElement[]
+        const usableBuffer = buffer && buffer[isFlipped ? 0 : 1]
+        context.drawImage(usableBuffer, x, y)
     }
 
     public drawTile = (name: string, context: CanvasRenderingContext2D, x: number, y: number) => {

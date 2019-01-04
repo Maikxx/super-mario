@@ -1,7 +1,7 @@
 import { levels } from './bundling/levels'
 import { spriteSheetSpecifications } from './bundling/sprites'
 import { Level } from './Classes/Level'
-import { createBackgroundLayer, createSpriteLayer, createCollisionLayer, createCameraLayer } from './layers'
+import { createBackgroundLayer, createSpriteLayer } from './layers'
 import { LevelSpecificationBackground } from '../types/Levels'
 import { SpriteSheet } from './Classes/SpriteSheet'
 import { images } from './bundling/images'
@@ -84,10 +84,10 @@ export const loadLevel = async (name: string, camera: Camera) => {
 
     const backgroundLayer = createBackgroundLayer(level, backgroundSprites)
     const spriteLayer = createSpriteLayer(level.entities)
-    const collisionLayer = createCollisionLayer(level)
-    const cameraLayer = createCameraLayer(camera)
+    // const collisionLayer = createCollisionLayer(level)
+    // const cameraLayer = createCameraLayer(camera)
 
-    level.composition.layers.push(backgroundLayer, spriteLayer, collisionLayer, cameraLayer)
+    level.composition.layers.push(backgroundLayer, spriteLayer)
 
     return level
 }
