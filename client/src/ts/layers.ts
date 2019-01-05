@@ -5,7 +5,7 @@ import { Coordinate } from '../types/Coordinate'
 import { Camera } from './Classes/Camera'
 
 export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
-    const { tiles, tileCollider, totalTimePassed } = level
+    const { tiles, tileCollider } = level
     const resolver = tileCollider.tiles
     const buffer = document.createElement('canvas') as HTMLCanvasElement
     const bufferContext = buffer.getContext('2d') as CanvasRenderingContext2D
@@ -15,6 +15,7 @@ export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
 
     let startIndex: number
     let endIndex: number
+
     const redraw = (drawFrom: number, drawTo: number) => {
         startIndex = drawFrom
         endIndex = drawTo
@@ -27,7 +28,7 @@ export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
                     const { name } = tile
 
                     if (sprites.animations.has(name)) {
-                        sprites.drawAnimation(name, bufferContext, x - startIndex, y, totalTimePassed)
+                        sprites.drawAnimation(name, bufferContext, x - startIndex, y, level.totalTimePassed)
                     } else {
                         sprites.drawTile(name, bufferContext, x - startIndex, y)
                     }
