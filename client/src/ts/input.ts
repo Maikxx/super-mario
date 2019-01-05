@@ -16,11 +16,15 @@ export const setupInputHandler = (entity: Entity) => {
     })
 
     input.addMapping(LEFT_ARROW, (keyState: number) => {
-        entity.run.direction = -keyState
+        entity.run.direction += keyState
+            ? -1
+            : 1
     })
 
     input.addMapping(RIGHT_ARROW, (keyState: number) => {
-        entity.run.direction = keyState
+        entity.run.direction += keyState
+            ? 1
+            : -1
     })
 
     return input
