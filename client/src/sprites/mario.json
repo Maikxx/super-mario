@@ -16,6 +16,10 @@
         {
             "name": "run-3",
             "boundingBox": [321, 44, 16, 16]
+        },
+        {
+            "name": "break",
+            "boundingBox": [337, 44, 16, 16]
         }
     ]
 }

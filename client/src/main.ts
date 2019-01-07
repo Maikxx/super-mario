@@ -31,6 +31,11 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     const timer = new Timer(1 / 60)
     timer.update = (deltaTime: number) => {
         level.update(deltaTime)
+
+        if (mario.position.x > 100) {
+            camera.position.x = mario.position.x - 100
+        }
+
         level.composition.draw(context, camera)
     }
     timer.start()

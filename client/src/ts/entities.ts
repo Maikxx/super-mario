@@ -15,7 +15,11 @@ export const createMario = async () => {
 
     const runAnimation = createAnimation([ 'run-1', 'run-2', 'run-3' ], 10)
     const routeFrame = (mario: Entity) => {
-        if (mario.run.direction !== 0) {
+        if (mario.run.distance > 0) {
+            if ((mario.velocity.x > 0 && mario.run.direction < 0) || (mario.velocity.x < 0 && mario.run.direction > 0)) {
+                return 'break'
+            }
+
             return runAnimation(mario.run.distance)
         }
 

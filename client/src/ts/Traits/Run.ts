@@ -3,27 +3,43 @@ import { Entity } from '../Classes/Entity'
 
 export class Run extends Trait {
     public direction: number
-    public speed: number
+    public acceleration: number
+    public deceleration: number
     public distance: number
     public heading: number
+    private dragFactor: number
 
     constructor() {
         super('run')
 
         this.direction = 0
-        this.speed = 5000
+        this.acceleration = 400
+        this.deceleration = 300
+        this.dragFactor = 1 / 5000
         this.distance = 0
         this.heading = 1
     }
 
     public update = (entity: Entity, deltaTime: number) => {
-        entity.velocity.x = this.speed * this.direction * deltaTime
+        const absractXVelocity = Math.abs(entity.velocity.x)
 
-        if (this.direction) {
+        if (this.direction !== 0) {
+            entity.velocity.x += this.acceleration * this.direction * deltaTime
+
             this.heading = this.direction
-            entity.run.distance += Math.abs(entity.velocity.x * deltaTime)
+        } else if (entity.velocity.x !== 0) {
+            const deceleration = Math.min(absractXVelocity, this.deceleration * deltaTime)
+
+            entity.velocity.x += entity.velocity.x > 0
+                ? -deceleration
+                : deceleration
         } else {
             this.distance = 0
         }
+
+        const drag = this.dragFactor * entity.velocity.x * absractXVelocity
+        entity.velocity.x -= drag
+
+        entity.run.distance += absractXVelocity * deltaTime
     }
 }
