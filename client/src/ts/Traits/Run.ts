@@ -7,7 +7,7 @@ export class Run extends Trait {
     public deceleration: number
     public distance: number
     public heading: number
-    private dragFactor: number
+    public dragFactor: number
 
     constructor() {
         super('run')
@@ -26,7 +26,13 @@ export class Run extends Trait {
         if (this.direction !== 0) {
             entity.velocity.x += this.acceleration * this.direction * deltaTime
 
-            this.heading = this.direction
+            if (entity.jump) {
+                if (entity.jump.falling === false) {
+                    this.heading = this.direction
+                }
+            } else {
+                this.heading = this.direction
+            }
         } else if (entity.velocity.x !== 0) {
             const deceleration = Math.min(absractXVelocity, this.deceleration * deltaTime)
 
@@ -40,6 +46,6 @@ export class Run extends Trait {
         const drag = this.dragFactor * entity.velocity.x * absractXVelocity
         entity.velocity.x -= drag
 
-        entity.run.distance += absractXVelocity * deltaTime
+        this.distance += absractXVelocity * deltaTime
     }
 }

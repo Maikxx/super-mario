@@ -22,9 +22,9 @@ export class TileResolver {
         do {
             range.push(this.toIndex(position))
             position += this.tileSize
-        } while (position < pMax) {
-            return range
-        }
+        } while (position < pMax)
+
+        return range
     }
 
     public getByIndex = (indexX: number, indexY: number): void | ResolvedTile => {

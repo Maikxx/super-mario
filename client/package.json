@@ -8,7 +8,7 @@
     "open-chrome": "wait-on http://localhost:3000 && open -a \"Google Chrome\" http://localhost:3000",
     "start-client": "yarn clear-dist && concurrently \"yarn watch-client\" \"yarn open-chrome\" --raw",
     "tslint": "tslint -p . -c tslint.json \"**/*.ts\" \"**/*.tsx\"",
-    "watch-client": "parcel public/index.html -p 3000 --no-source-maps"
+    "watch-client": "parcel -p 3000 watch public/index.html"
   },
   "author": "Maikel van Veen <maikeloo10@hotmail.com>",
   "license": "MIT",

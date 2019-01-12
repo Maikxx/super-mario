@@ -22,7 +22,7 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     debugCollision(canvas, mario, camera)
 
     // Mario
-    mario.position.set(64, 180)
+    mario.position.set(64, 64)
 
     // Interaction
     const input = setupInputHandler(mario)

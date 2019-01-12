@@ -1,31 +1,55 @@
-import { Entity } from '../Classes/Entity'
+import { Entity, Sides } from '../Classes/Entity'
 import { Trait } from '../Classes/Trait'
 
 export class Jump extends Trait {
-    public duration: number
-    public velocity: number
-    public engageTime: number
+    public canJump = 0
+    public duration = 0.3
+    public velocity = 200
+    public engageTime = 0
+    public requestTime = 0
+    public gracePeriod = 0.1
+    private speedBoost = 0.3
 
     constructor() {
         super('jump')
+    }
 
-        this.duration = 0.5
-        this.engageTime = 0
-        this.velocity = 200
+    public get falling() {
+        return this.canJump < 0
     }
 
     public start() {
-        this.engageTime = this.duration
+        this.requestTime = this.gracePeriod
     }
 
     public cancel() {
         this.engageTime = 0
+        this.requestTime = 0
+    }
+
+    public obstruct = (entity: Entity, side: Symbol) => {
+        if (side === Sides.BOTTOM) {
+            this.canJump = 1
+        } else if (side === Sides.TOP) {
+            this.cancel()
+        }
     }
 
     public update = (entity: Entity, deltaTime: number) => {
+        if (this.requestTime > 0) {
+            if (this.canJump > 0) {
+                this.engageTime = this.duration
+                this.requestTime = 0
+            }
+
+            this.requestTime -= deltaTime
+        }
+
         if (this.engageTime > 0) {
-            entity.velocity.y = -this.velocity
+            entity.velocity.y = -(this.velocity + Math.abs(entity.velocity.x) * this.speedBoost)
             this.engageTime -= deltaTime
         }
+
+        this.canJump--
     }
 }

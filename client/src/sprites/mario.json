@@ -20,6 +20,10 @@
         {
             "name": "break",
             "boundingBox": [337, 44, 16, 16]
+        },
+        {
+            "name": "jump",
+            "boundingBox": [355, 44, 16, 16]
         }
     ]
 }

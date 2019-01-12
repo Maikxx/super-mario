@@ -1,4 +1,4 @@
-import { Entity } from './Entity'
+import { Entity, Sides } from './Entity'
 import { Matrix } from './Math'
 import { TileResolver } from './TileResolver'
 
@@ -48,7 +48,7 @@ export class TileCollider {
     }
 
     public checkY = (entity: Entity) => {
-        let y = 0
+        let y
         if (entity.velocity.y > 0) {
             y = entity.position.y + entity.size.y
         } else if (entity.velocity.y < 0) {
@@ -75,17 +75,17 @@ export class TileCollider {
                 if (entity.position.y + entity.size.y > match.y1) {
                     entity.position.y = match.y1 - entity.size.y
                     entity.velocity.y = 0
+
+                    entity.obstruct(Sides.BOTTOM)
                 }
             } else if (entity.velocity.y < 0) {
                 if (entity.position.y < match.y2) {
                     entity.position.y = match.y2
                     entity.velocity.y = 0
+
+                    entity.obstruct(Sides.TOP)
                 }
             }
         })
-    }
-
-    public test = (entity: Entity) => {
-        this.checkY(entity)
     }
 }
