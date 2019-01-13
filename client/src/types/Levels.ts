@@ -1,5 +1,11 @@
 import { Grid } from './Matrix'
 
+export interface ExpandedTile {
+    tile: LevelSpecificationTile,
+    x: number
+    y: number
+}
+
 export interface ResolvedTile {
     tile: Grid
     y1: number

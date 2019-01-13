@@ -1,5 +1,5 @@
 import { Level } from '../Classes/Level'
-import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification } from '../../types/Levels'
+import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification, ExpandedTile } from '../../types/Levels'
 import { Camera } from '../Classes/Camera'
 import { loadSpriteSheet, loadJSON } from '../loaders'
 import { createBackgroundLayer, createSpriteLayer } from '../layers'
@@ -41,7 +41,9 @@ const expandRange = (range: number[]) => {
     return { x: 0, y: 0 }
 }
 
-export const createTiles = (level: Level, tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) => {
+export const expandTiles = (tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) => {
+    const expandedTiles: ExpandedTile[] = []
+
     const walkTiles = (tiles: LevelSpecificationTile[], offsetX: number, offsetY: number) => {
         for (const tile of tiles) {
             for (const { x, y } of expandRanges(tile.ranges)) {
@@ -52,9 +54,10 @@ export const createTiles = (level: Level, tiles: LevelSpecificationTile[], patte
                     const patternTiles = patterns[tile.pattern].tiles
                     walkTiles(patternTiles, derivedX, derivedY)
                 } else {
-                    level.tiles.set(derivedX, derivedY, {
-                        name: tile.name,
-                        type: tile.type,
+                    expandedTiles.push({
+                        tile,
+                        x: derivedX,
+                        y: derivedY,
                     })
                 }
             }
@@ -62,6 +65,8 @@ export const createTiles = (level: Level, tiles: LevelSpecificationTile[], patte
     }
 
     walkTiles(tiles, 0, 0)
+
+    return expandedTiles
 }
 
 export const loadLevel = async (name: string, camera: Camera) => {
@@ -69,7 +74,12 @@ export const loadLevel = async (name: string, camera: Camera) => {
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 
-    createTiles(level, levelSpec.tiles, levelSpec.patterns)
+    for (const { tile, x, y } of expandTiles(levelSpec.tiles, levelSpec.patterns)) {
+        level.tiles.set(x, y, {
+            name: tile.name,
+            type: tile.type,
+        })
+    }
 
     const backgroundLayer = createBackgroundLayer(level, backgroundSprites)
     const spriteLayer = createSpriteLayer(level.entities)
