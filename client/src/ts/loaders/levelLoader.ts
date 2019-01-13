@@ -4,31 +4,53 @@ import { Camera } from '../Classes/Camera'
 import { loadSpriteSheet, loadJSON } from '../loaders'
 import { createBackgroundLayer, createSpriteLayer } from '../layers'
 
-export const createTiles = (
-    level: Level,
-    tiles: LevelSpecificationTile[],
-    patterns?: LevelSpecificationPatterns,
-    offsetX: number = 0,
-    offsetY: number = 0
-) => {
-    const applyRange = (
-        tile: LevelSpecificationTile,
-        xStart: number,
-        xLength: number,
-        yStart: number,
-        yLength: number
-    ) => {
-        const xEnd = xStart + xLength
-        const yEnd = yStart + yLength
+function* expandSpan (xStart: number, xLength: number, yStart: number, yLength: number) {
+    const xEnd = xStart + xLength
+    const yEnd = yStart + yLength
 
-        for (let x = xStart; x < xEnd; x++) {
-            for (let y = yStart; y < yEnd; y++) {
+    for (let x = xStart; x < xEnd; x++) {
+        for (let y = yStart; y < yEnd; y++) {
+            yield { x, y }
+        }
+    }
+}
+
+function* expandRanges(ranges: number[][]) {
+    for (const range of ranges) {
+        for (const item of expandRange(range)) {
+            yield item
+        }
+    }
+}
+
+const expandRange = (range: number[]) => {
+    if (range.length === 2) {
+        const [ xStart, yStart ] = range
+
+        return expandSpan(xStart, 1, yStart, 1)
+    } else if (range.length === 3) {
+        const [ xStart, xLength, yStart ] = range
+
+        return expandSpan(xStart, xLength, yStart, 1)
+    } else if (range.length === 4) {
+        const [ xStart, xLength, yStart, yLength ] = range
+
+        return expandSpan(xStart, xLength, yStart, yLength)
+    }
+
+    return { x: 0, y: 0 }
+}
+
+export const createTiles = (level: Level, tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) => {
+    const walkTiles = (tiles: LevelSpecificationTile[], offsetX: number, offsetY: number) => {
+        for (const tile of tiles) {
+            for (const { x, y } of expandRanges(tile.ranges)) {
                 const derivedX = x + offsetX
                 const derivedY = y + offsetY
 
                 if (tile.pattern && patterns) {
-                    const patternBackgrounds = patterns[tile.pattern].tiles
-                    createTiles(level, patternBackgrounds, patterns, derivedX, derivedY)
+                    const patternTiles = patterns[tile.pattern].tiles
+                    walkTiles(patternTiles, derivedX, derivedY)
                 } else {
                     level.tiles.set(derivedX, derivedY, {
                         name: tile.name,
@@ -39,23 +61,7 @@ export const createTiles = (
         }
     }
 
-    tiles.forEach(tile => {
-        tile.ranges.forEach(range => {
-            if (range.length === 2) {
-                const [ xStart, yStart ] = range
-
-                applyRange(tile, xStart, 1, yStart, 1)
-            } else if (range.length === 3) {
-                const [ xStart, xLength, yStart ] = range
-
-                applyRange(tile, xStart, xLength, yStart, 1)
-            } else if (range.length === 4) {
-                const [ xStart, xLength, yStart, yLength ] = range
-
-                applyRange(tile, xStart, xLength, yStart, yLength)
-            }
-        })
-    })
+    walkTiles(tiles, 0, 0)
 }
 
 export const loadLevel = async (name: string, camera: Camera) => {
