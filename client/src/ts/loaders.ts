@@ -29,7 +29,7 @@ export const loadSpriteSheet = async (name: string) => {
         animations,
     } = spriteSheetSpecification as SpriteSheetSpecification
 
-    const image = await loadImage(`https://super-mario-server.herokuapp.com/images/images/${imageName}`)
+    const image = await loadImage(`https://super-mario-server.herokuapp.com/images/${imageName}`)
     const sprites = new SpriteSheet(image, tileWidth || 16, tileHeight || 16)
 
     if (tiles) {
