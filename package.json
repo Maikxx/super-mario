@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "start-client": "cd client && yarn start-client"
+    "start-client": "cd client && yarn start-client",
+    "start-server": "cd server && yarn start-server"
   },
   "author": "Maikel van Veen <maikeloo10@hotmail.com>",
   "license": "MIT",
