@@ -3,23 +3,18 @@ import { Entity } from './Classes/Entity'
 import { Level } from './Classes/Level'
 import { Coordinate } from '../types/Coordinate'
 import { Camera } from './Classes/Camera'
+import { Matrix } from './Classes/Math'
+import { TileResolver } from './Classes/TileResolver'
 
-export const createBackgroundLayer = (level: Level, sprites: SpriteSheet) => {
-    const { tiles, tileCollider } = level
-    const resolver = tileCollider.tiles
+export const createBackgroundLayer = (level: Level, tiles: Matrix, sprites: SpriteSheet) => {
+    const resolver = new TileResolver(tiles)
     const buffer = document.createElement('canvas') as HTMLCanvasElement
     const bufferContext = buffer.getContext('2d') as CanvasRenderingContext2D
 
     buffer.width = 640 + 16
     buffer.height = 320
 
-    let startIndex: number
-    let endIndex: number
-
-    const redraw = (drawFrom: number, drawTo: number) => {
-        startIndex = drawFrom
-        endIndex = drawTo
-
+    const redraw = (startIndex: number, endIndex: number) => {
         for (let x = startIndex; x < endIndex; x++) {
             const column = tiles.grid[x]
 
@@ -80,6 +75,11 @@ export const createSpriteLayer = (entities: Set<Entity>, width: number = 64, hei
 
 export const createCollisionLayer = (level: Level) => {
     const resolvedTiles = [] as Coordinate[]
+
+    if (!level.tileCollider) {
+        return
+    }
+
     const tileResolver = level.tileCollider.tiles
     const tileSize = tileResolver.tileSize
     const getByIndexOriginal = tileResolver.getByIndex

@@ -1,13 +1,12 @@
 import { Compositor } from './Compositor'
 import { Entity } from './Entity'
-import { Matrix } from './Math'
 import { TileCollider } from './TileCollider'
+import { Matrix } from './Math'
 
 export class Level {
     public composition: Compositor
     public entities: Set<Entity>
-    public tiles: Matrix
-    public tileCollider: TileCollider
+    public tileCollider: TileCollider | null
     public totalTimePassed: number
     private gravity: number
 
@@ -15,14 +14,21 @@ export class Level {
         this.gravity = 1500
         this.composition = new Compositor()
         this.entities = new Set()
-        this.tiles = new Matrix()
-        this.tileCollider = new TileCollider(this.tiles)
+        this.tileCollider = null
         this.totalTimePassed = 0
+    }
+
+    public setCollisionGrid = (matrix: Matrix) => {
+        this.tileCollider = new TileCollider(matrix)
     }
 
     public update = (deltaTime: number) => {
         this.entities.forEach(entity => {
             entity.update(deltaTime)
+
+            if (!this.tileCollider) {
+                return
+            }
 
             entity.position.x += entity.velocity.x * deltaTime
             this.tileCollider.checkX(entity)

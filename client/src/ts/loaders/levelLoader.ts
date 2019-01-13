@@ -3,6 +3,7 @@ import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification,
 import { Camera } from '../Classes/Camera'
 import { loadSpriteSheet, loadJSON } from '../loaders'
 import { createBackgroundLayer, createSpriteLayer } from '../layers'
+import { Matrix } from '../Classes/Math'
 
 function* expandSpan (xStart: number, xLength: number, yStart: number, yLength: number) {
     const xEnd = xStart + xLength
@@ -41,6 +42,26 @@ const expandRange = (range: number[]) => {
     return { x: 0, y: 0 }
 }
 
+export const createCollisionGrid = (tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) => {
+    const grid = new Matrix()
+
+    for (const { tile, x, y } of expandTiles(tiles, patterns)) {
+        grid.set(x, y, { type: tile.type })
+    }
+
+    return grid
+}
+
+export const createBackgroundGrid = (tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) => {
+    const grid = new Matrix()
+
+    for (const { tile, x, y } of expandTiles(tiles, patterns)) {
+        grid.set(x, y, { name: tile.name })
+    }
+
+    return grid
+}
+
 export const expandTiles = (tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) => {
     const expandedTiles: ExpandedTile[] = []
 
@@ -74,14 +95,11 @@ export const loadLevel = async (name: string, camera: Camera) => {
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 
-    for (const { tile, x, y } of expandTiles(levelSpec.tiles, levelSpec.patterns)) {
-        level.tiles.set(x, y, {
-            name: tile.name,
-            type: tile.type,
-        })
-    }
+    const collisionGrid = createCollisionGrid(levelSpec.tiles, levelSpec.patterns)
+    level.setCollisionGrid(collisionGrid)
 
-    const backgroundLayer = createBackgroundLayer(level, backgroundSprites)
+    const backgroundGrid = createBackgroundGrid(levelSpec.tiles, levelSpec.patterns)
+    const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites)
     const spriteLayer = createSpriteLayer(level.entities)
     // const collisionLayer = createCollisionLayer(level)
     // const cameraLayer = createCameraLayer(camera)
