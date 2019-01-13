@@ -1,10 +1,10 @@
 import './scss/index.scss'
 import { createMario } from './ts/entities'
 import { Timer } from './ts/Classes/Timer'
-import { loadLevel } from './ts/loaders'
 import { debugCollision } from './ts/debug'
 import { setupInputHandler } from './ts/input'
 import { Camera } from './ts/Classes/Camera'
+import { loadLevel } from './ts/loaders/levelLoader'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
