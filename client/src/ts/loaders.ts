@@ -14,14 +14,12 @@ export const loadImage = (url: string): Promise<HTMLImageElement> => {
 
 export const loadJSON = async (url: string) => {
     const response = await fetch(url)
-    console.log(await response.blob())
     const json = await response.json()
-    console.log(json)
     return json
 }
 
 export const loadSpriteSheet = async (name: string) => {
-    const spriteSheetSpecification = await loadJSON(`/sprites/${name}.json`)
+    const spriteSheetSpecification = await loadJSON(`https://super-mario-server.herokuapp.com/sprites/${name}.json`)
     const {
         tileWidth,
         tileHeight,
@@ -31,7 +29,7 @@ export const loadSpriteSheet = async (name: string) => {
         animations,
     } = spriteSheetSpecification as SpriteSheetSpecification
 
-    const image = await loadImage(`/images/${imageName}`)
+    const image = await loadImage(`https://super-mario-server.herokuapp.com/images/images/${imageName}`)
     const sprites = new SpriteSheet(image, tileWidth || 16, tileHeight || 16)
 
     if (tiles) {

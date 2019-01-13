@@ -59,7 +59,7 @@ export const createTiles = (
 }
 
 export const loadLevel = async (name: string, camera: Camera) => {
-    const levelSpec = await loadJSON(`/levels/${name}.json`) as LevelSpecification
+    const levelSpec = await loadJSON(`https://super-mario-server.herokuapp.com/levels/${name}.json`) as LevelSpecification
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 

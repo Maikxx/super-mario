@@ -14,7 +14,7 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     const camera = new Camera()
     const [ mario, level ] = await Promise.all([
         createMario(),
-        loadLevel('levelOne', camera),
+        loadLevel('1-1', camera),
     ])
 
     level.entities.add(mario)
