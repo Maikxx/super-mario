@@ -4,133 +4,134 @@
         {
             "tile": "sky",
             "ranges": [
-                [
-                    0, 500,
-                    0, 20
-                ]
+                [0, 500, 0, 20]
             ]
         },
         {
             "tile": "ground",
             "type": "ground",
             "ranges": [
-                [
-                    0, 500,
-                    18, 2
-                ]
+                [0, 500, 18, 2]
             ]
         },
         {
             "tile": "sky",
             "ranges": [
-                [
-                    20, 4,
-                    18, 2
-                ]
-            ]
-        },
-        {
-            "tile": "bricks",
-            "type": "ground",
-            "ranges": [
-                [
-                    50, 10,
-                    14
-                ],
-                [
-                    70, 12,
-                    8
-                ],
-                [
-                    100, 5,
-                    12
-                ],
-                [
-                    170, 12,
-                    8
-                ],
-                [
-                    150, 5,
-                    12
-                ]
-            ]
-        },
-        {
-            "tile": "chanceBlock",
-            "type": "ground",
-            "ranges": [
-                [
-                    14,
-                    14
-                ],
-                [
-                    70, 1,
-                    8
-                ],
-                [
-                    103, 1,
-                    12
-                ],
-                [
-                    175, 1,
-                    8
-                ],
-                [
-                    153, 1,
-                    12
-                ]
-            ]
-        },
-        {
-            "tile": "solidBlock",
-            "type": "ground",
-            "ranges": [
-                [
-                    250, 22,
-                    17
-                ],
-                [
-                    251, 20,
-                    16
-                ],
-                [
-                    252, 18,
-                    15
-                ],
-                [
-                    253, 16,
-                    14
-                ],
-                [
-                    254, 14,
-                    13
-                ],
-                [
-                    255, 12,
-                    12
-                ],
-                [
-                    256, 10,
-                    11
-                ],
-                [
-                    257, 8,
-                    10
-                ],
-                [
-                    258, 6,
-                    9
-                ]
+                [20, 4, 18, 2]
             ]
         },
         {
             "tile": "sky",
             "ranges": [
-                [
-                    259, 4,
-                    9, 9
-                ]
+                [259, 4, 9, 9]
+            ]
+        },
+        {
+            "pattern": "pipe-2h",
+            "ranges": [
+                [35, 15],
+                [34, 15],
+                [55, 17]
+            ]
+        },
+        {
+            "pattern": "pipe-3h",
+            "ranges": [
+                [45, 10]
+            ]
+        },
+        {
+            "pattern": "pipe-4h",
+            "ranges": [
+                [53, 9],
+                [64, 9]
             ]
         }
-    ]
+    ],
+    "patterns": {
+        "pipe-cap-vertical": {
+            "backgrounds": [
+                {
+                    "tile": "pipe-cap-vertical-left",
+                    "type": "ground",
+                    "ranges": [
+                        [0, 0]
+                    ]
+                },
+                {
+                    "tile": "pipe-cap-vertical-right",
+                    "type": "ground",
+                    "ranges": [
+                        [1, 0]
+                    ]
+                }
+            ]
+        },
+        "pipe-base-vertical": {
+            "backgrounds": [
+                {
+                    "tile": "pipe-base-vertical-left",
+                    "type": "ground",
+                    "ranges": [
+                        [0, 0]
+                    ]
+                },
+                {
+                    "tile": "pipe-base-vertical-right",
+                    "type": "ground",
+                    "ranges": [
+                        [1, 0]
+                    ]
+                }
+            ]
+        },
+        "pipe-2h": {
+            "backgrounds": [
+                {
+                    "pattern": "pipe-cap-vertical",
+                    "ranges": [
+                        [0, 0]
+                    ]
+                },
+                {
+                    "pattern": "pipe-base-vertical",
+                    "ranges": [
+                        [0, 1, 1, 1]
+                    ]
+                }
+            ]
+        },
+        "pipe-3h": {
+            "backgrounds": [
+                {
+                    "pattern": "pipe-cap-vertical",
+                    "ranges": [
+                        [0, 0]
+                    ]
+                },
+                {
+                    "pattern": "pipe-base-vertical",
+                    "ranges": [
+                        [0, 1, 1, 2]
+                    ]
+                }
+            ]
+        },
+        "pipe-4h": {
+            "backgrounds": [
+                {
+                    "pattern": "pipe-cap-vertical",
+                    "ranges": [
+                        [0, 0]
+                    ]
+                },
+                {
+                    "pattern": "pipe-base-vertical",
+                    "ranges": [
+                        [0, 1,1, 3]
+                    ]
+                }
+            ]
+        }
+    }
 }

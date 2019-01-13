@@ -2,7 +2,7 @@ import { levels } from './bundling/levels'
 import { spriteSheetSpecifications } from './bundling/sprites'
 import { Level } from './Classes/Level'
 import { createBackgroundLayer, createSpriteLayer } from './layers'
-import { LevelSpecificationBackground } from '../types/Levels'
+import { LevelSpecificationBackground, LevelSpecificationPatterns } from '../types/Levels'
 import { SpriteSheet } from './Classes/SpriteSheet'
 import { images } from './bundling/images'
 import { Camera } from './Classes/Camera'
@@ -53,17 +53,31 @@ export const loadSpriteSheet = async (name: string) => {
     return sprites
 }
 
-export const createTiles = (level: Level, backgrounds: LevelSpecificationBackground[]) => {
+export const createTiles = (
+    level: Level,
+    backgrounds: LevelSpecificationBackground[],
+    patterns?: LevelSpecificationPatterns,
+    offsetX: number = 0,
+    offsetY: number = 0
+) => {
     const applyRange = (background: LevelSpecificationBackground, xStart: number, xLength: number, yStart: number, yLength: number) => {
         const xEnd = xStart + xLength
         const yEnd = yStart + yLength
 
         for (let x = xStart; x < xEnd; x++) {
             for (let y = yStart; y < yEnd; y++) {
-                level.tiles.set(x, y, {
-                    name: background.tile,
-                    type: background.type,
-                })
+                const derivedX = x + offsetX
+                const derivedY = y + offsetY
+
+                if (background.pattern && patterns) {
+                    const patternBackgrounds = patterns[background.pattern].backgrounds
+                    createTiles(level, patternBackgrounds, patterns, derivedX, derivedY)
+                } else {
+                    level.tiles.set(derivedX, derivedY, {
+                        name: background.tile,
+                        type: background.type,
+                    })
+                }
             }
         }
     }
@@ -92,7 +106,7 @@ export const loadLevel = async (name: string, camera: Camera) => {
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 
-    createTiles(level, levelSpec.backgrounds)
+    createTiles(level, levelSpec.backgrounds, levelSpec.patterns)
 
     const backgroundLayer = createBackgroundLayer(level, backgroundSprites)
     const spriteLayer = createSpriteLayer(level.entities)
