@@ -1,0 +1,27 @@
+{
+    "imageName": "characters.gif",
+    "frames": [
+        {
+            "name": "walk-1",
+            "boundingBox": [296, 187, 16, 16]
+        },
+        {
+            "name": "walk-2",
+            "boundingBox": [315, 187, 16, 16]
+        },
+        {
+            "name": "flat",
+            "boundingBox": [277, 43, 16, 16]
+        }
+    ],
+    "animations": [
+        {
+            "name": "walk",
+            "frameLength": 0.15,
+            "frames": [
+                "walk-1",
+                "walk-2"
+            ]
+        }
+    ]
+}

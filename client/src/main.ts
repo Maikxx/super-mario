@@ -1,10 +1,10 @@
 import './scss/index.scss'
 import { Timer } from './ts/Classes/Timer'
-import { debugCollision } from './ts/debug'
 import { setupInputHandler } from './ts/input'
 import { Camera } from './ts/Classes/Camera'
 import { loadLevel } from './ts/loaders/levelLoader'
 import { loadMario } from './ts/entities/Mario'
+import { loadGoomba } from './ts/entities/Goomba'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -12,15 +12,18 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
 (async() => {
     // Initializers
     const camera = new Camera()
-    const [ createMario, level ] = await Promise.all([
+    const [ createMario, createGoomba, level ] = await Promise.all([
         loadMario(),
+        loadGoomba(),
         loadLevel('1-1', camera),
     ])
 
     const mario = createMario()
     level.entities.add(mario)
 
-    debugCollision(canvas, mario, camera)
+    const goomba = createGoomba()
+    goomba.position.x = 220
+    level.entities.add(goomba)
 
     // Mario
     mario.position.set(64, 64)

@@ -6,6 +6,8 @@ import { Run } from '../Traits/Run'
 export const Sides = {
     TOP: Symbol('top'),
     BOTTOM: Symbol('bottom'),
+    RIGHT: Symbol('right'),
+    LEFT: Symbol('left'),
 }
 
 export class Entity {
@@ -16,6 +18,7 @@ export class Entity {
     public run: Run
     public jump: Jump
     public turbo: (turboOn: number) => void
+    public lifetime: number
 
     public draw: (context: CanvasRenderingContext2D) => void
 
@@ -24,6 +27,7 @@ export class Entity {
         this.velocity = new Vec2(0, 0)
         this.size = new Vec2(0, 0)
         this.traits = []
+        this.lifetime = 0
     }
 
     public addTrait = (trait: Trait) => {
@@ -41,5 +45,7 @@ export class Entity {
         this.traits.forEach(trait => {
             trait.update(this, deltaTime)
         })
+
+        this.lifetime += deltaTime
     }
 }

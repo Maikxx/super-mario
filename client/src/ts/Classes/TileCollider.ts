@@ -37,11 +37,15 @@ export class TileCollider {
                 if (entity.position.x + entity.size.x > match.x1) {
                     entity.position.x = match.x1 - entity.size.x
                     entity.velocity.x = 0
+
+                    entity.obstruct(Sides.RIGHT)
                 }
             } else if (entity.velocity.x < 0) {
                 if (entity.position.x < match.x2) {
                     entity.position.x = match.x2
                     entity.velocity.x = 0
+
+                    entity.obstruct(Sides.LEFT)
                 }
             }
         })
