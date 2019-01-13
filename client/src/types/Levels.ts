@@ -8,15 +8,15 @@ export interface ResolvedTile {
     x2: number
 }
 
-export interface LevelSpecificationBackground {
-    tile: string
+export interface LevelSpecificationTile {
+    name: string
     pattern?: string
     type: string
     ranges: number[][]
 }
 
 export interface LevelSpecificationPattern {
-    backgrounds: LevelSpecificationBackground[]
+    tiles: LevelSpecificationTile[]
 }
 
 export interface LevelSpecificationPatterns {
@@ -25,7 +25,7 @@ export interface LevelSpecificationPatterns {
 
 export interface LevelSpecification {
     spriteSheet: string
-    backgrounds: LevelSpecificationBackground[]
+    tiles: LevelSpecificationTile[]
     patterns: LevelSpecificationPatterns
 }
 

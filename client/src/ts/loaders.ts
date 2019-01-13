@@ -2,7 +2,7 @@ import { levels } from './bundling/levels'
 import { spriteSheetSpecifications } from './bundling/sprites'
 import { Level } from './Classes/Level'
 import { createBackgroundLayer, createSpriteLayer } from './layers'
-import { LevelSpecificationBackground, LevelSpecificationPatterns } from '../types/Levels'
+import { LevelSpecificationPatterns, LevelSpecificationTile } from '../types/Levels'
 import { SpriteSheet } from './Classes/SpriteSheet'
 import { images } from './bundling/images'
 import { Camera } from './Classes/Camera'
@@ -55,12 +55,18 @@ export const loadSpriteSheet = async (name: string) => {
 
 export const createTiles = (
     level: Level,
-    backgrounds: LevelSpecificationBackground[],
+    tiles: LevelSpecificationTile[],
     patterns?: LevelSpecificationPatterns,
     offsetX: number = 0,
     offsetY: number = 0
 ) => {
-    const applyRange = (background: LevelSpecificationBackground, xStart: number, xLength: number, yStart: number, yLength: number) => {
+    const applyRange = (
+        tile: LevelSpecificationTile,
+        xStart: number,
+        xLength: number,
+        yStart: number,
+        yLength: number
+    ) => {
         const xEnd = xStart + xLength
         const yEnd = yStart + yLength
 
@@ -69,33 +75,33 @@ export const createTiles = (
                 const derivedX = x + offsetX
                 const derivedY = y + offsetY
 
-                if (background.pattern && patterns) {
-                    const patternBackgrounds = patterns[background.pattern].backgrounds
+                if (tile.pattern && patterns) {
+                    const patternBackgrounds = patterns[tile.pattern].tiles
                     createTiles(level, patternBackgrounds, patterns, derivedX, derivedY)
                 } else {
                     level.tiles.set(derivedX, derivedY, {
-                        name: background.tile,
-                        type: background.type,
+                        name: tile.name,
+                        type: tile.type,
                     })
                 }
             }
         }
     }
 
-    backgrounds.forEach(background => {
-        background.ranges.forEach(range => {
+    tiles.forEach(tile => {
+        tile.ranges.forEach(range => {
             if (range.length === 2) {
                 const [ xStart, yStart ] = range
 
-                applyRange(background, xStart, 1, yStart, 1)
+                applyRange(tile, xStart, 1, yStart, 1)
             } else if (range.length === 3) {
                 const [ xStart, xLength, yStart ] = range
 
-                applyRange(background, xStart, xLength, yStart, 1)
+                applyRange(tile, xStart, xLength, yStart, 1)
             } else if (range.length === 4) {
                 const [ xStart, xLength, yStart, yLength ] = range
 
-                applyRange(background, xStart, xLength, yStart, yLength)
+                applyRange(tile, xStart, xLength, yStart, yLength)
             }
         })
     })
@@ -106,7 +112,7 @@ export const loadLevel = async (name: string, camera: Camera) => {
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 
-    createTiles(level, levelSpec.backgrounds, levelSpec.patterns)
+    createTiles(level, levelSpec.tiles, levelSpec.patterns)
 
     const backgroundLayer = createBackgroundLayer(level, backgroundSprites)
     const spriteLayer = createSpriteLayer(level.entities)
