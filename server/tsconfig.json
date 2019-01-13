@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "lib": ["esnext"],
+        "target": "es5",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "downlevelIteration": true
+    },
+    "include": [
+        "**/*.ts",
+        "**/*.tsx"
+    ],
+    "exclude": [
+        "**/*.spec.ts",
+        "./node_modules",
+        "./dist"
+    ]
+}
