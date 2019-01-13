@@ -1,7 +1,6 @@
-import { spriteSheetSpecifications } from './bundling/sprites'
 import { SpriteSheet } from './Classes/SpriteSheet'
-import { images } from './bundling/images'
 import { createAnimation } from './animation'
+import { SpriteSheetSpecification } from '../types/Sprite'
 
 export const loadImage = (url: string): Promise<HTMLImageElement> => {
     return new Promise(resolve => {
@@ -13,11 +12,26 @@ export const loadImage = (url: string): Promise<HTMLImageElement> => {
     })
 }
 
-export const loadSpriteSheet = async (name: string) => {
-    const spriteSheetSpecification = spriteSheetSpecifications[name]
-    const { tileWidth, tileHeight, imageName, tiles, frames, animations } = spriteSheetSpecification
+export const loadJSON = async (url: string) => {
+    const response = await fetch(url)
+    console.log(await response.blob())
+    const json = await response.json()
+    console.log(json)
+    return json
+}
 
-    const image = await loadImage(images[imageName])
+export const loadSpriteSheet = async (name: string) => {
+    const spriteSheetSpecification = await loadJSON(`/sprites/${name}.json`)
+    const {
+        tileWidth,
+        tileHeight,
+        imageName,
+        tiles,
+        frames,
+        animations,
+    } = spriteSheetSpecification as SpriteSheetSpecification
+
+    const image = await loadImage(`/images/${imageName}`)
     const sprites = new SpriteSheet(image, tileWidth || 16, tileHeight || 16)
 
     if (tiles) {

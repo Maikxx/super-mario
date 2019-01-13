@@ -1,8 +1,7 @@
 import { Level } from '../Classes/Level'
-import { LevelSpecificationTile, LevelSpecificationPatterns } from '../../types/Levels'
+import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification } from '../../types/Levels'
 import { Camera } from '../Classes/Camera'
-import { levels } from '../bundling/levels'
-import { loadSpriteSheet } from '../loaders'
+import { loadSpriteSheet, loadJSON } from '../loaders'
 import { createBackgroundLayer, createSpriteLayer } from '../layers'
 
 export const createTiles = (
@@ -60,7 +59,7 @@ export const createTiles = (
 }
 
 export const loadLevel = async (name: string, camera: Camera) => {
-    const levelSpec = levels[name]
+    const levelSpec = await loadJSON(`/levels/${name}.json`) as LevelSpecification
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 
