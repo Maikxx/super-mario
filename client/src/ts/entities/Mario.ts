@@ -2,14 +2,14 @@ import { Entity } from '../Classes/Entity'
 import { Jump } from '../Traits/Jump'
 import { Run } from '../Traits/Run'
 import { loadSpriteSheet } from '../loaders'
-import { createAnimation } from '../animation'
 import { SpriteSheet } from '../Classes/SpriteSheet'
 
 const SLOW_DRAG = 1 / 1000
 const FAST_DRAG = 1 / 5000
 
 const createMarioFactory = (sprite: SpriteSheet) => {
-    const runAnimation = createAnimation([ 'run-1', 'run-2', 'run-3' ], 6)
+    const runAnimation = sprite.animations.get('run')
+
     const routeFrame = (mario: Entity) => {
         if (mario.jump.falling) {
             return 'jump'
@@ -20,7 +20,9 @@ const createMarioFactory = (sprite: SpriteSheet) => {
                 return 'break'
             }
 
-            return runAnimation(mario.run.distance)
+            if (runAnimation) {
+                return runAnimation(mario.run.distance)
+            }
         }
 
         return 'idle'
