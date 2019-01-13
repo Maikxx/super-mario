@@ -46,10 +46,10 @@ const createMarioFactory = (sprite: SpriteSheet) => {
         mario.addTrait(new Run())
         mario.addTrait(new Jump())
 
-        mario.run.dragFactor = SLOW_DRAG
-
         mario.turbo = (turboOn: number) => setTurboState(turboOn, mario)
         mario.draw = (context: CanvasRenderingContext2D) => drawMario(context, mario)
+
+        mario.turbo(0)
 
         return mario
     }
