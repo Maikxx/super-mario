@@ -15,6 +15,8 @@ export const createBackgroundLayer = (level: Level, tiles: Matrix, sprites: Spri
     buffer.height = 320
 
     const redraw = (startIndex: number, endIndex: number) => {
+        bufferContext.clearRect(0, 0, buffer.width, buffer.height)
+
         for (let x = startIndex; x < endIndex; x++) {
             const column = tiles.grid[x]
 

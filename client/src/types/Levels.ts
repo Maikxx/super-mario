@@ -29,9 +29,13 @@ export interface LevelSpecificationPatterns {
     [key: string]: LevelSpecificationPattern
 }
 
+export interface LevelSpecificationLayer {
+    tiles: LevelSpecificationTile[]
+}
+
 export interface LevelSpecification {
     spriteSheet: string
-    tiles: LevelSpecificationTile[]
+    layers: LevelSpecificationLayer[]
     patterns: LevelSpecificationPatterns
 }
 

@@ -95,16 +95,23 @@ export const loadLevel = async (name: string, camera: Camera) => {
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
 
-    const collisionGrid = createCollisionGrid(levelSpec.tiles, levelSpec.patterns)
+    const mergedTiles = levelSpec.layers.reduce((mergedTiles, layerSpec) => {
+        return mergedTiles.concat(layerSpec.tiles)
+    }, [] as LevelSpecificationTile[])
+
+    const collisionGrid = createCollisionGrid(mergedTiles, levelSpec.patterns)
     level.setCollisionGrid(collisionGrid)
 
-    const backgroundGrid = createBackgroundGrid(levelSpec.tiles, levelSpec.patterns)
-    const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites)
-    const spriteLayer = createSpriteLayer(level.entities)
+    levelSpec.layers.forEach(layer => {
+        const backgroundGrid = createBackgroundGrid(layer.tiles, levelSpec.patterns)
+        const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites)
+        level.composition.layers.push(backgroundLayer)
+    })
+
     // const collisionLayer = createCollisionLayer(level)
     // const cameraLayer = createCameraLayer(camera)
-
-    level.composition.layers.push(backgroundLayer, spriteLayer)
+    const spriteLayer = createSpriteLayer(level.entities)
+    level.composition.layers.push(spriteLayer)
 
     return level
 }
