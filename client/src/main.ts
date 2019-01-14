@@ -17,7 +17,6 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
         loadLevel('1-1', camera),
     ])
 
-    console.log(entity)
     const mario = entity.mario()
     level.entities.add(mario)
 
