@@ -6,7 +6,7 @@ import { Matrix } from './Math'
 export class Level {
     public composition: Compositor
     public entities: Set<Entity>
-    public tileCollider: TileCollider | null
+    public tileCollider: TileCollider
     public totalTimePassed: number
     private gravity: number
 
@@ -14,7 +14,6 @@ export class Level {
         this.gravity = 1500
         this.composition = new Compositor()
         this.entities = new Set()
-        this.tileCollider = null
         this.totalTimePassed = 0
     }
 

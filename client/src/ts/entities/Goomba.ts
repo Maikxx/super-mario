@@ -1,6 +1,7 @@
 import { loadSpriteSheet } from '../loaders'
 import { SpriteSheet } from '../Classes/SpriteSheet'
-import { Entity, Sides } from '../Classes/Entity'
+import { Entity } from '../Classes/Entity'
+import { PendulumWalk } from '../Traits/PendulumWalk'
 
 export const loadGoomba = async () => {
     const sprite = await loadSpriteSheet('goomba')
@@ -22,18 +23,7 @@ const createGoombaFactory = (sprite: SpriteSheet) => {
         const goomba = new Entity()
         goomba.size.set(16, 16)
 
-        goomba.addTrait({
-            NAME: 'walk',
-            obstruct: (goomba, side) => {
-                if (side === Sides.LEFT || side === Sides.RIGHT) {
-                    goomba.velocity.x = -goomba.velocity.x
-                }
-            },
-            update: (goomba, deltaTime) => {
-                goomba.lifetime += deltaTime
-                goomba.velocity.x = -30
-            },
-        })
+        goomba.addTrait(new PendulumWalk())
 
         goomba.draw = (context: CanvasRenderingContext2D) => drawGoomba(context, goomba)
 

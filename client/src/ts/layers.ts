@@ -78,10 +78,6 @@ export const createSpriteLayer = (entities: Set<Entity>, width: number = 64, hei
 export const createCollisionLayer = (level: Level) => {
     const resolvedTiles = [] as Coordinate[]
 
-    if (!level.tileCollider) {
-        return
-    }
-
     const tileResolver = level.tileCollider.tiles
     const tileSize = tileResolver.tileSize
     const getByIndexOriginal = tileResolver.getByIndex
@@ -108,8 +104,8 @@ export const createCollisionLayer = (level: Level) => {
         level.entities.forEach(entity => {
             context.beginPath()
             context.rect(
-                entity.position.x - camera.position.x,
-                entity.position.y - camera.position.y,
+                entity.boundingBox.left - camera.position.x,
+                entity.boundingBox.top - camera.position.y,
                 entity.size.x, entity.size.y
             )
             context.stroke()

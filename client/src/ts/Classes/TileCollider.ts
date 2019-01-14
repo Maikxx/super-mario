@@ -10,39 +10,32 @@ export class TileCollider {
     }
 
     public checkX = (entity: Entity) => {
-        let x = 0
+        let x
         if (entity.velocity.x > 0) {
-            x = entity.position.x + entity.size.x
+            x = entity.boundingBox.right
         } else if (entity.velocity.x < 0) {
-            x = entity.position.x
+            x = entity.boundingBox.left
         } else {
             return
         }
 
-        const matches = this.tiles.searchByRange(
-            x, x,
-            entity.position.y, entity.position.y + entity.size.y
-        )
+        const matches = this.tiles.searchByRange(x, x, entity.boundingBox.top, entity.boundingBox.bottom)
 
         matches.forEach(match => {
-            if (!match) {
-                return
-            }
-
-            if (match.tile.type !== 'ground') {
+            if (!match || match.tile.type !== 'ground') {
                 return
             }
 
             if (entity.velocity.x > 0) {
-                if (entity.position.x + entity.size.x > match.x1) {
-                    entity.position.x = match.x1 - entity.size.x
+                if (entity.boundingBox.right > match.x1) {
+                    entity.boundingBox.left = match.x1
                     entity.velocity.x = 0
 
                     entity.obstruct(Sides.RIGHT)
                 }
             } else if (entity.velocity.x < 0) {
-                if (entity.position.x < match.x2) {
-                    entity.position.x = match.x2
+                if (entity.boundingBox.left < match.x2) {
+                    entity.boundingBox.left = match.x2
                     entity.velocity.x = 0
 
                     entity.obstruct(Sides.LEFT)
@@ -54,37 +47,30 @@ export class TileCollider {
     public checkY = (entity: Entity) => {
         let y
         if (entity.velocity.y > 0) {
-            y = entity.position.y + entity.size.y
+            y = entity.boundingBox.bottom
         } else if (entity.velocity.y < 0) {
-            y = entity.position.y
+            y = entity.boundingBox.top
         } else {
             return
         }
 
-        const matches = this.tiles.searchByRange(
-            entity.position.x, entity.position.x + entity.size.x,
-            y, y
-        )
+        const matches = this.tiles.searchByRange(entity.boundingBox.left, entity.boundingBox.right, y, y)
 
         matches.forEach(match => {
-            if (!match) {
-                return
-            }
-
-            if (match.tile.type !== 'ground') {
+            if (!match || match.tile.type !== 'ground') {
                 return
             }
 
             if (entity.velocity.y > 0) {
-                if (entity.position.y + entity.size.y > match.y1) {
-                    entity.position.y = match.y1 - entity.size.y
+                if (entity.boundingBox.bottom > match.y1) {
+                    entity.boundingBox.bottom = match.y1
                     entity.velocity.y = 0
 
                     entity.obstruct(Sides.BOTTOM)
                 }
             } else if (entity.velocity.y < 0) {
-                if (entity.position.y < match.y2) {
-                    entity.position.y = match.y2
+                if (entity.boundingBox.top < match.y2) {
+                    entity.boundingBox.top = match.y2
                     entity.velocity.y = 0
 
                     entity.obstruct(Sides.TOP)

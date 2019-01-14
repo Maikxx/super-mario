@@ -2,6 +2,7 @@ import { Vec2 } from './Math'
 import { Trait } from './Trait'
 import { Jump } from '../Traits/Jump'
 import { Run } from '../Traits/Run'
+import { BoundingBox } from './BoundingBox'
 
 export const Sides = {
     TOP: Symbol('top'),
@@ -17,8 +18,10 @@ export class Entity {
     public traits: Trait[]
     public run: Run
     public jump: Jump
+    public boundingBox: BoundingBox
     public turbo: (turboOn: number) => void
     public lifetime: number
+    public offset: Vec2
 
     public draw: (context: CanvasRenderingContext2D) => void
 
@@ -26,6 +29,8 @@ export class Entity {
         this.position = new Vec2(0, 0)
         this.velocity = new Vec2(0, 0)
         this.size = new Vec2(0, 0)
+        this.offset = new Vec2(0, 0)
+        this.boundingBox = new BoundingBox(this.position, this.size, this.offset)
         this.traits = []
         this.lifetime = 0
     }

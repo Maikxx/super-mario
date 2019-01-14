@@ -3,8 +3,8 @@ import { Timer } from './ts/Classes/Timer'
 import { setupInputHandler } from './ts/input'
 import { Camera } from './ts/Classes/Camera'
 import { loadLevel } from './ts/loaders/levelLoader'
-import { loadMario } from './ts/entities/Mario'
-import { loadGoomba } from './ts/entities/Goomba'
+import { createCollisionLayer } from './ts/layers'
+import { loadEntities } from './ts/entities'
 
 const canvas = document.getElementById('screen') as HTMLCanvasElement
 const context = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -12,21 +12,27 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
 (async() => {
     // Initializers
     const camera = new Camera()
-    const [ createMario, createGoomba, level ] = await Promise.all([
-        loadMario(),
-        loadGoomba(),
+    const [ entity, level ] = await Promise.all([
+        loadEntities(),
         loadLevel('1-1', camera),
     ])
 
-    const mario = createMario()
+    console.log(entity)
+    const mario = entity.mario()
     level.entities.add(mario)
 
-    const goomba = createGoomba()
+    const goomba = entity.goomba()
     goomba.position.x = 220
     level.entities.add(goomba)
 
+    const koopa = entity.koopa()
+    koopa.position.x = 260
+    level.entities.add(koopa)
+
     // Mario
     mario.position.set(64, 64)
+
+    level.composition.layers.push(createCollisionLayer(level))
 
     // Interaction
     const input = setupInputHandler(mario)
