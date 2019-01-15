@@ -1,5 +1,5 @@
 import { Level } from '../Classes/Level'
-import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification, ExpandedTile } from '../../types/Levels'
+import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification } from '../../types/Levels'
 import { Camera } from '../Classes/Camera'
 import { loadSpriteSheet, loadJSON } from '../loaders'
 import { createBackgroundLayer, createSpriteLayer } from '../layers'
@@ -19,9 +19,7 @@ function* expandSpan (xStart: number, xLength: number, yStart: number, yLength: 
 
 function* expandRanges(ranges: number[][]) {
     for (const range of ranges) {
-        for (const item of expandRange(range)) {
-            yield item
-        }
+        yield* expandRange(range)
     }
 }
 
@@ -63,10 +61,8 @@ export const createBackgroundGrid = (tiles: LevelSpecificationTile[], patterns?:
     return grid
 }
 
-export const expandTiles = (tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) => {
-    const expandedTiles: ExpandedTile[] = []
-
-    const walkTiles = (tiles: LevelSpecificationTile[], offsetX: number, offsetY: number) => {
+export function* expandTiles (tiles: LevelSpecificationTile[], patterns?: LevelSpecificationPatterns) {
+    function* walkTiles (tiles: LevelSpecificationTile[], offsetX: number, offsetY: number): any {
         for (const tile of tiles) {
             for (const { x, y } of expandRanges(tile.ranges)) {
                 const derivedX = x + offsetX
@@ -74,21 +70,20 @@ export const expandTiles = (tiles: LevelSpecificationTile[], patterns?: LevelSpe
 
                 if (tile.pattern && patterns) {
                     const patternTiles = patterns[tile.pattern].tiles
-                    walkTiles(patternTiles, derivedX, derivedY)
+
+                    yield* walkTiles(patternTiles, derivedX, derivedY)
                 } else {
-                    expandedTiles.push({
+                    yield {
                         tile,
                         x: derivedX,
                         y: derivedY,
-                    })
+                    }
                 }
             }
         }
     }
 
-    walkTiles(tiles, 0, 0)
-
-    return expandedTiles
+    yield* walkTiles(tiles, 0, 0)
 }
 
 const setupCollision = (leveSpecification: LevelSpecification, level: Level) => {
