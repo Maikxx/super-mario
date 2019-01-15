@@ -1,10 +1,10 @@
 import { Level } from '../Classes/Level'
 import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification } from '../../types/Levels'
-import { Camera } from '../Classes/Camera'
 import { loadSpriteSheet, loadJSON } from '../loaders'
 import { createBackgroundLayer, createSpriteLayer } from '../layers'
 import { Matrix } from '../Classes/Math'
 import { SpriteSheet } from '../Classes/SpriteSheet'
+import { EntityFactories } from '../entities'
 
 function* expandSpan (xStart: number, xLength: number, yStart: number, yLength: number) {
     const xEnd = xStart + xLength
@@ -105,19 +105,27 @@ const setupBackgrounds = (levelSpecification: LevelSpecification, level: Level, 
     })
 }
 
-const setupEntities = (level: Level) => {
+const setupEntities = (levelSpecification: LevelSpecification, level: Level, entityFactory: EntityFactories) => {
+    levelSpecification.entities.forEach(({ name, position: [ x, y ] }) => {
+        const createEntity = entityFactory[name]
+        const entity = createEntity()
+
+        entity.position.set(x, y)
+        level.entities.add(entity)
+    })
+
     const spriteLayer = createSpriteLayer(level.entities)
     level.composition.layers.push(spriteLayer)
 }
 
-export const loadLevel = async (name: string, camera: Camera) => {
+export const createLevelLoader = (entityFactory: EntityFactories) => async (name: string) => {
     const levelSpecification = await loadJSON(`https://super-mario-server.herokuapp.com/levels/${name}.json`) as LevelSpecification
     const level = new Level()
     const backgroundSprites = await loadSpriteSheet(levelSpecification.spriteSheet)
 
     setupCollision(levelSpecification, level)
     setupBackgrounds(levelSpecification, level, backgroundSprites)
-    setupEntities(level)
+    setupEntities(levelSpecification, level, entityFactory)
 
     return level
 }

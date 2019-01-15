@@ -33,10 +33,16 @@ export interface LevelSpecificationLayer {
     tiles: LevelSpecificationTile[]
 }
 
+export interface LevelSpecificationEntity {
+    name: string
+    position: number[]
+}
+
 export interface LevelSpecification {
     spriteSheet: string
     layers: LevelSpecificationLayer[]
     patterns: LevelSpecificationPatterns
+    entities: LevelSpecificationEntity[]
 }
 
 export interface LevelSpecifications {

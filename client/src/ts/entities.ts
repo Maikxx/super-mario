@@ -3,7 +3,7 @@ import { loadGoomba } from './entities/Goomba'
 import { loadKoopa } from './entities/Koopa'
 import { Entity } from './Classes/Entity'
 
-interface EntityFactories {
+export interface EntityFactories {
     [key: string]: () => Entity
 }
 

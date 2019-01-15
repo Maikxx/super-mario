@@ -2,7 +2,7 @@ import './scss/index.scss'
 import { Timer } from './ts/Classes/Timer'
 import { setupInputHandler } from './ts/input'
 import { Camera } from './ts/Classes/Camera'
-import { loadLevel } from './ts/loaders/levelLoader'
+import { createLevelLoader } from './ts/loaders/levelLoader'
 import { createCollisionLayer } from './ts/layers'
 import { loadEntities } from './ts/entities'
 
@@ -12,21 +12,12 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
 (async() => {
     // Initializers
     const camera = new Camera()
-    const [ entity, level ] = await Promise.all([
-        loadEntities(),
-        loadLevel('1-1', camera),
-    ])
+    const entityFactory = await loadEntities()
+    const loadLevel = await createLevelLoader(entityFactory)
+    const level = await loadLevel('1-1')
 
-    const mario = entity.mario()
+    const mario = entityFactory.mario()
     level.entities.add(mario)
-
-    const goomba = entity.goomba()
-    goomba.position.x = 220
-    level.entities.add(goomba)
-
-    const koopa = entity.koopa()
-    koopa.position.x = 260
-    level.entities.add(koopa)
 
     // Mario
     mario.position.set(64, 64)
