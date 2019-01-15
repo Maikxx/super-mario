@@ -3,11 +3,11 @@
     "frames": [
         {
             "name": "walk-1",
-            "boundingBox": [296, 206, 16, 16]
+            "boundingBox": [296, 206, 16, 24]
         },
         {
             "name": "walk-2",
-            "boundingBox": [315, 206, 16, 16]
+            "boundingBox": [315, 206, 16, 24]
         }
     ],
     "animations": [
