@@ -4,6 +4,7 @@ import { Camera } from '../Classes/Camera'
 import { loadSpriteSheet, loadJSON } from '../loaders'
 import { createBackgroundLayer, createSpriteLayer } from '../layers'
 import { Matrix } from '../Classes/Math'
+import { SpriteSheet } from '../Classes/SpriteSheet'
 
 function* expandSpan (xStart: number, xLength: number, yStart: number, yLength: number) {
     const xEnd = xStart + xLength
@@ -90,28 +91,38 @@ export const expandTiles = (tiles: LevelSpecificationTile[], patterns?: LevelSpe
     return expandedTiles
 }
 
-export const loadLevel = async (name: string, camera: Camera) => {
-    const levelSpec = await loadJSON(`https://super-mario-server.herokuapp.com/levels/${name}.json`) as LevelSpecification
-    const level = new Level()
-    const backgroundSprites = await loadSpriteSheet(levelSpec.spriteSheet)
-
-    const mergedTiles = levelSpec.layers.reduce((mergedTiles, layerSpec) => {
-        return mergedTiles.concat(layerSpec.tiles)
+const setupCollision = (leveSpecification: LevelSpecification, level: Level) => {
+    const mergedTiles = leveSpecification.layers.reduce((mergedTiles, layerSpecification) => {
+        return mergedTiles.concat(layerSpecification.tiles)
     }, [] as LevelSpecificationTile[])
 
-    const collisionGrid = createCollisionGrid(mergedTiles, levelSpec.patterns)
-    level.setCollisionGrid(collisionGrid)
+    const collisionGrid = createCollisionGrid(mergedTiles, leveSpecification.patterns)
 
-    levelSpec.layers.forEach(layer => {
-        const backgroundGrid = createBackgroundGrid(layer.tiles, levelSpec.patterns)
+    level.setCollisionGrid(collisionGrid)
+}
+
+const setupBackgrounds = (levelSpecification: LevelSpecification, level: Level, backgroundSprites: SpriteSheet) => {
+    levelSpecification.layers.forEach(layer => {
+        const backgroundGrid = createBackgroundGrid(layer.tiles, levelSpecification.patterns)
         const backgroundLayer = createBackgroundLayer(level, backgroundGrid, backgroundSprites)
+
         level.composition.layers.push(backgroundLayer)
     })
+}
 
-    // const collisionLayer = createCollisionLayer(level)
-    // const cameraLayer = createCameraLayer(camera)
+const setupEntities = (level: Level) => {
     const spriteLayer = createSpriteLayer(level.entities)
     level.composition.layers.push(spriteLayer)
+}
+
+export const loadLevel = async (name: string, camera: Camera) => {
+    const levelSpecification = await loadJSON(`https://super-mario-server.herokuapp.com/levels/${name}.json`) as LevelSpecification
+    const level = new Level()
+    const backgroundSprites = await loadSpriteSheet(levelSpecification.spriteSheet)
+
+    setupCollision(levelSpecification, level)
+    setupBackgrounds(levelSpecification, level, backgroundSprites)
+    setupEntities(level)
 
     return level
 }
