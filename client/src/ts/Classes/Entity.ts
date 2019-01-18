@@ -30,8 +30,6 @@ export class Entity {
     public stomper?: Stomper
     public killable?: Killable
 
-    public draw: (context: CanvasRenderingContext2D) => void
-
     constructor() {
         this.position = new Vec2(0, 0)
         this.velocity = new Vec2(0, 0)
@@ -46,6 +44,9 @@ export class Entity {
         this.traits.push(trait)
         this[trait.NAME] = trait
     }
+
+    // tslint:disable-next-line:no-empty
+    public draw = (context: CanvasRenderingContext2D) => {}
 
     public obstruct = (side: Symbol) => {
         this.traits.forEach(trait => {
