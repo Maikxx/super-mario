@@ -1,5 +1,7 @@
 import { Entity } from './Entity'
+import { Level } from './Level'
 
+// tslint:disable:no-empty
 export class Trait {
     public NAME: string
 
@@ -7,10 +9,8 @@ export class Trait {
         this.NAME = name
     }
 
-    // tslint:disable-next-line:no-empty
     public obstruct = (entity: Entity, side: Symbol) => {}
-
-    public update = (entity: Entity, deltaTime: number) => {
-        console.warn('Unhandled update call')
-    }
+    public collides = (us: Entity, them: Entity) => {}
+    public update = (entity: Entity, deltaTime: number, level: Level) => {}
 }
+// tslint:enable:no-empty

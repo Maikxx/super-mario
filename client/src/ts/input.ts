@@ -9,25 +9,37 @@ export const setupInputHandler = (mario: Entity) => {
     const input = new KeyboardState()
 
     input.addMapping(SPACEBAR, (keyState: number) => {
-        if (keyState) {
-            mario.jump.start()
-        } else {
-            mario.jump.cancel()
+        if (mario.jump) {
+            if (keyState) {
+                mario.jump.start()
+            } else {
+                mario.jump.cancel()
+            }
         }
     })
 
     // Speed up the game by pressing Shift
     input.addMapping(SHIFT_KEY, (keyState: number) => {
-        mario.turbo(keyState)
+        if (mario.turbo) {
+            mario.turbo(keyState)
+        }
     })
 
     input.addMapping(LEFT_ARROW, (keyState: number) => {
+        if (!mario.run) {
+            return
+        }
+
         mario.run.direction += keyState
             ? -1
             : 1
     })
 
     input.addMapping(RIGHT_ARROW, (keyState: number) => {
+        if (!mario.run) {
+            return
+        }
+
         mario.run.direction += keyState
             ? 1
             : -1

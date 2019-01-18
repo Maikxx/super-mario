@@ -3,6 +3,10 @@ import { Trait } from './Trait'
 import { Jump } from '../Traits/Jump'
 import { Run } from '../Traits/Run'
 import { BoundingBox } from './BoundingBox'
+import { PendulumWalk } from '../Traits/PendulumWalk'
+import { Stomper } from '../Traits/Stomper'
+import { Killable } from '../Traits/Killable'
+import { Level } from './Level'
 
 export const Sides = {
     TOP: Symbol('top'),
@@ -16,12 +20,15 @@ export class Entity {
     public velocity: Vec2
     public size: Vec2
     public traits: Trait[]
-    public run: Run
-    public jump: Jump
+    public run?: Run
+    public jump?: Jump
     public boundingBox: BoundingBox
-    public turbo: (turboOn: number) => void
+    public turbo?: (turboOn: number) => void
     public lifetime: number
     public offset: Vec2
+    public pendulumWalk?: PendulumWalk
+    public stomper?: Stomper
+    public killable?: Killable
 
     public draw: (context: CanvasRenderingContext2D) => void
 
@@ -46,9 +53,15 @@ export class Entity {
         })
     }
 
-    public update = (deltaTime: number) => {
+    public collides = (candidate: Entity) => {
         this.traits.forEach(trait => {
-            trait.update(this, deltaTime)
+            trait.collides(this, candidate)
+        })
+    }
+
+    public update = (deltaTime: number, level: Level) => {
+        this.traits.forEach(trait => {
+            trait.update(this, deltaTime, level)
         })
 
         this.lifetime += deltaTime
