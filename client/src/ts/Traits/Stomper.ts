@@ -2,22 +2,20 @@ import { Trait } from '../Classes/Trait'
 import { Entity } from '../Classes/Entity'
 
 export class Stomper extends Trait {
-    public queueBounce: boolean
     public bounceSpeed = 400
 
     constructor() {
         super('stomper')
-        this.queueBounce = false
     }
 
-    public bounce = () => {
-        this.queueBounce = true
+    public bounce = (us: Entity, them: Entity) => {
+        us.boundingBox.bottom = them.boundingBox.top
+        us.velocity.y = -this.bounceSpeed
     }
 
-    public update = (entity: Entity) => {
-        if (this.queueBounce) {
-            entity.velocity.y = -this.bounceSpeed
-            this.queueBounce = false
+    public collides = (us: Entity, them: Entity) => {
+        if (them.killable && them.killable.dead && us.velocity.y > them.velocity.y) {
+            this.bounce(us, them)
         }
     }
 }

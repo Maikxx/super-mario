@@ -1,7 +1,7 @@
 import { loadSpriteSheet } from '../loaders'
 import { SpriteSheet } from '../Classes/SpriteSheet'
 import { Entity } from '../Classes/Entity'
-import { PendulumWalk } from '../Traits/PendulumWalk'
+import { PendulumMove } from '../Traits/PendulumMove'
 import { Trait } from '../Classes/Trait'
 import { Killable } from '../Traits/Killable'
 
@@ -26,10 +26,8 @@ class Behaviour extends Trait {
                     us.killable.kill()
                 }
 
-                them.stomper.bounce()
-
-                if (us.pendulumWalk) {
-                    us.pendulumWalk.speed = 0
+                if (us.pendulumMove) {
+                    us.pendulumMove.speed = 0
                 }
             } else {
                 if (them.killable) {
@@ -67,7 +65,7 @@ const createGoombaFactory = (sprite: SpriteSheet) => {
         const goomba = new Entity()
         goomba.size.set(16, 16)
 
-        goomba.addTrait(new PendulumWalk())
+        goomba.addTrait(new PendulumMove())
         goomba.addTrait(new Behaviour())
         goomba.addTrait(new Killable())
 

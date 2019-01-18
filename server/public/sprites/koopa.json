@@ -8,6 +8,14 @@
         {
             "name": "walk-2",
             "boundingBox": [315, 206, 16, 24]
+        },
+        {
+            "name": "hiding",
+            "boundingBox": [144, 206, 16, 24]
+        },
+        {
+            "name": "hiding-with-legs",
+            "boundingBox": [163, 206, 16, 24]
         }
     ],
     "animations": [
@@ -17,6 +25,14 @@
             "frames": [
                 "walk-1",
                 "walk-2"
+            ]
+        },
+        {
+            "name": "wake",
+            "frameLength": 0.15,
+            "frames": [
+                "hiding-with-legs",
+                "hiding"
             ]
         }
     ]

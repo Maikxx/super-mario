@@ -3,7 +3,7 @@ import { Trait } from './Trait'
 import { Jump } from '../Traits/Jump'
 import { Run } from '../Traits/Run'
 import { BoundingBox } from './BoundingBox'
-import { PendulumWalk } from '../Traits/PendulumWalk'
+import { PendulumMove } from '../Traits/PendulumMove'
 import { Stomper } from '../Traits/Stomper'
 import { Killable } from '../Traits/Killable'
 import { Level } from './Level'
@@ -26,9 +26,11 @@ export class Entity {
     public turbo?: (turboOn: number) => void
     public lifetime: number
     public offset: Vec2
-    public pendulumWalk?: PendulumWalk
+    public pendulumMove?: PendulumMove
     public stomper?: Stomper
     public killable?: Killable
+    public behaviour?: any
+    public canCollide = true
 
     constructor() {
         this.position = new Vec2(0, 0)

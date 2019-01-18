@@ -33,16 +33,24 @@ export class Level {
             }
 
             entity.position.x += entity.velocity.x * deltaTime
-            this.tileCollider.checkX(entity)
+
+            if (entity.canCollide) {
+                this.tileCollider.checkX(entity)
+            }
 
             entity.position.y += entity.velocity.y * deltaTime
-            this.tileCollider.checkY(entity)
+
+            if (entity.canCollide) {
+                this.tileCollider.checkY(entity)
+            }
 
             entity.velocity.y += this.gravity * deltaTime
         })
 
         this.entities.forEach(entity => {
-            this.entityCollider.check(entity)
+            if (entity.canCollide) {
+                this.entityCollider.check(entity)
+            }
         })
 
         this.totalTimePassed += deltaTime

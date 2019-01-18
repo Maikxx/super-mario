@@ -1,11 +1,12 @@
 import { Entity, Sides } from '../Classes/Entity'
 import { Trait } from '../Classes/Trait'
 
-export class PendulumWalk extends Trait {
+export class PendulumMove extends Trait {
     public speed: number
+    public enabled = true
 
     constructor() {
-        super('pendulumWalk')
+        super('pendulumMove')
         this.speed = -30
     }
 
@@ -16,6 +17,8 @@ export class PendulumWalk extends Trait {
     }
 
     public update = (entity: Entity) => {
-        entity.velocity.x = this.speed
+        if (this.enabled) {
+            entity.velocity.x = this.speed
+        }
     }
 }
