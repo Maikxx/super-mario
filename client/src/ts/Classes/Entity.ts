@@ -9,6 +9,7 @@ import { Killable } from '../Traits/Killable'
 import { Level } from './Level'
 import { ResolvedTile } from '../../types/Levels'
 import { Solid } from '../Traits/Solid'
+import { PlayerController } from '../Traits/PlayerController'
 
 export const Sides = {
     TOP: Symbol('top'),
@@ -33,6 +34,7 @@ export class Entity {
     public killable?: Killable
     public behaviour?: any
     public solid?: Solid
+    public playerController?: PlayerController
 
     constructor() {
         this.position = new Vec2(0, 0)

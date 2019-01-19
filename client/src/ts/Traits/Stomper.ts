@@ -8,6 +8,9 @@ export class Stomper extends Trait {
         super('stomper')
     }
 
+    // tslint:disable-next-line:no-empty
+    public onStomp = (us: Entity, them: Entity) => {}
+
     public bounce = (us: Entity, them: Entity) => {
         us.boundingBox.bottom = them.boundingBox.top
         us.velocity.y = -this.bounceSpeed
@@ -20,6 +23,7 @@ export class Stomper extends Trait {
 
         if (us.velocity.y > them.velocity.y) {
             this.bounce(us, them)
+            this.onStomp(us, them)
         }
     }
 }

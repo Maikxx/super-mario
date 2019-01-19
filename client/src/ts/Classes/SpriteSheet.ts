@@ -5,7 +5,7 @@ export class SpriteSheet {
     private height: number
     private tiles: Map<string, HTMLCanvasElement[]>
 
-    constructor(image: HTMLImageElement, width: number, height: number) {
+    constructor(image: HTMLImageElement, width: number = 16, height: number = 16) {
         this.image = image
         this.width = width
         this.height = height

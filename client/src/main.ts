@@ -7,10 +7,13 @@ import { loadEntities } from './ts/entities'
 import { Entity } from './ts/Classes/Entity'
 import { PlayerController } from './ts/Traits/PlayerController'
 import { createCollisionLayer } from './ts/layers/CollisionLayer'
+import { loadFont } from './ts/loaders/fontLoader'
+import { createDashboardLayer } from './ts/layers/dashboardLayer'
 
 const createPlayerEnvironment = (playerEntity: Entity) => {
     const playerEnvironment = new Entity()
     const playerControl = new PlayerController()
+
     playerControl.setPlayer(playerEntity)
     playerControl.checkPoint.set(64, 64)
     playerEnvironment.addTrait(playerControl)
@@ -24,7 +27,7 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
 (async() => {
     // Initializers
     const camera = new Camera()
-    const entityFactory = await loadEntities()
+    const [ entityFactory, font ] = await Promise.all([ loadEntities(), loadFont() ])
     const loadLevel = await createLevelLoader(entityFactory)
     const level = await loadLevel('1-1')
 
@@ -33,7 +36,7 @@ const context = canvas.getContext('2d') as CanvasRenderingContext2D
     // Mario
     const playerEnvironment = createPlayerEnvironment(mario)
     level.entities.add(playerEnvironment)
-    level.composition.layers.push(createCollisionLayer(level))
+    level.composition.layers.push(createCollisionLayer(level), createDashboardLayer(font, playerEnvironment))
 
     // Interaction
     const input = setupInputHandler(mario)
