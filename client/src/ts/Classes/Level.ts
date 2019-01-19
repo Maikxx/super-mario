@@ -53,6 +53,10 @@ export class Level {
             }
         })
 
+        this.entities.forEach(entity => {
+            entity.finalize()
+        })
+
         this.totalTimePassed += deltaTime
     }
 }

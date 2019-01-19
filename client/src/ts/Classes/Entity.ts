@@ -50,6 +50,10 @@ export class Entity {
     // tslint:disable-next-line:no-empty
     public draw = (context: CanvasRenderingContext2D) => {}
 
+    public finalize = () => {
+        this.traits.forEach(trait => trait.finalize())
+    }
+
     public obstruct = (side: Symbol) => {
         this.traits.forEach(trait => {
             trait.obstruct(this, side)
