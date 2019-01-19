@@ -28,17 +28,11 @@ export class TileCollider {
 
             if (entity.velocity.x > 0) {
                 if (entity.boundingBox.right > match.x1) {
-                    entity.boundingBox.left = match.x1
-                    entity.velocity.x = 0
-
-                    entity.obstruct(Sides.RIGHT)
+                    entity.obstruct(Sides.RIGHT, match)
                 }
             } else if (entity.velocity.x < 0) {
                 if (entity.boundingBox.left < match.x2) {
-                    entity.boundingBox.left = match.x2
-                    entity.velocity.x = 0
-
-                    entity.obstruct(Sides.LEFT)
+                    entity.obstruct(Sides.LEFT, match)
                 }
             }
         })
@@ -63,17 +57,11 @@ export class TileCollider {
 
             if (entity.velocity.y > 0) {
                 if (entity.boundingBox.bottom > match.y1) {
-                    entity.boundingBox.bottom = match.y1
-                    entity.velocity.y = 0
-
-                    entity.obstruct(Sides.BOTTOM)
+                    entity.obstruct(Sides.BOTTOM, match)
                 }
             } else if (entity.velocity.y < 0) {
                 if (entity.boundingBox.top < match.y2) {
-                    entity.boundingBox.top = match.y2
-                    entity.velocity.y = 0
-
-                    entity.obstruct(Sides.TOP)
+                    entity.obstruct(Sides.TOP, match)
                 }
             }
         })

@@ -5,6 +5,7 @@ import { loadSpriteSheet } from '../loaders'
 import { SpriteSheet } from '../Classes/SpriteSheet'
 import { Stomper } from '../Traits/Stomper'
 import { Killable } from '../Traits/Killable'
+import { Solid } from '../Traits/Solid'
 
 const SLOW_DRAG = 1 / 1000
 const FAST_DRAG = 1 / 5000
@@ -57,6 +58,7 @@ const createMarioFactory = (sprite: SpriteSheet) => {
 
         mario.size.set(14, 16)
 
+        mario.addTrait(new Solid())
         mario.addTrait(new Run())
         mario.addTrait(new Jump())
         mario.addTrait(new Stomper())

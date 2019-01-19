@@ -7,6 +7,8 @@ import { PendulumMove } from '../Traits/PendulumMove'
 import { Stomper } from '../Traits/Stomper'
 import { Killable } from '../Traits/Killable'
 import { Level } from './Level'
+import { ResolvedTile } from '../../types/Levels'
+import { Solid } from '../Traits/Solid'
 
 export const Sides = {
     TOP: Symbol('top'),
@@ -30,7 +32,7 @@ export class Entity {
     public stomper?: Stomper
     public killable?: Killable
     public behaviour?: any
-    public canCollide = true
+    public solid?: Solid
 
     constructor() {
         this.position = new Vec2(0, 0)
@@ -54,9 +56,9 @@ export class Entity {
         this.traits.forEach(trait => trait.finalize())
     }
 
-    public obstruct = (side: Symbol) => {
+    public obstruct = (side: Symbol, match?: ResolvedTile) => {
         this.traits.forEach(trait => {
-            trait.obstruct(this, side)
+            trait.obstruct(this, side, match)
         })
     }
 

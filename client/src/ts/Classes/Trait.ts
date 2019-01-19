@@ -1,5 +1,6 @@
 import { Entity } from './Entity'
 import { Level } from './Level'
+import { ResolvedTile } from '../../types/Levels'
 
 // tslint:disable:no-empty
 export class Trait {
@@ -19,7 +20,7 @@ export class Trait {
         this.tasks.push(task)
     }
 
-    public obstruct = (entity: Entity, side: Symbol) => {}
+    public obstruct = (entity: Entity, side: Symbol, match?: ResolvedTile) => {}
     public collides = (us: Entity, them: Entity) => {}
     public update = (entity: Entity, deltaTime: number, level: Level) => {}
 }
