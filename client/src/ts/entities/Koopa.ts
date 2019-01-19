@@ -5,6 +5,7 @@ import { PendulumMove } from '../Traits/PendulumMove'
 import { Trait } from '../Classes/Trait'
 import { Killable } from '../Traits/Killable'
 import { Solid } from '../Traits/Solid'
+import { Physics } from '../Traits/Physics'
 
 export const STATE_WALKING = Symbol('walking')
 export const STATE_HIDING = Symbol('hiding')
@@ -146,6 +147,7 @@ const createKoopaFactory = (sprite: SpriteSheet) => {
         koopa.size.set(16, 16)
         koopa.offset.y = 8
 
+        koopa.addTrait(new Physics())
         koopa.addTrait(new Solid())
         koopa.addTrait(new PendulumMove())
         koopa.addTrait(new Killable())

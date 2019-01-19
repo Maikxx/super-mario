@@ -10,7 +10,7 @@ export class Level {
     public tileCollider: TileCollider
     public totalTimePassed: number
     public entityCollider: EntityCollider
-    private gravity: number
+    public gravity: number
 
     constructor() {
         this.gravity = 1500
@@ -27,18 +27,6 @@ export class Level {
     public update = (deltaTime: number) => {
         this.entities.forEach(entity => {
             entity.update(deltaTime, this)
-
-            if (!this.tileCollider) {
-                return
-            }
-
-            entity.position.x += entity.velocity.x * deltaTime
-            this.tileCollider.checkX(entity)
-
-            entity.position.y += entity.velocity.y * deltaTime
-            this.tileCollider.checkY(entity)
-
-            entity.velocity.y += this.gravity * deltaTime
         })
 
         this.entities.forEach(entity => {

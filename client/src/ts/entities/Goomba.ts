@@ -5,6 +5,7 @@ import { PendulumMove } from '../Traits/PendulumMove'
 import { Trait } from '../Classes/Trait'
 import { Killable } from '../Traits/Killable'
 import { Solid } from '../Traits/Solid'
+import { Physics } from '../Traits/Physics'
 
 export const loadGoomba = async () => {
     const sprite = await loadSpriteSheet('goomba')
@@ -66,6 +67,7 @@ const createGoombaFactory = (sprite: SpriteSheet) => {
         const goomba = new Entity()
         goomba.size.set(16, 16)
 
+        goomba.addTrait(new Physics())
         goomba.addTrait(new Solid())
         goomba.addTrait(new PendulumMove())
         goomba.addTrait(new Behaviour())
