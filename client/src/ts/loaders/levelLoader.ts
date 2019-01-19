@@ -1,10 +1,11 @@
 import { Level } from '../Classes/Level'
 import { LevelSpecificationTile, LevelSpecificationPatterns, LevelSpecification } from '../../types/Levels'
 import { loadSpriteSheet, loadJSON } from '../loaders'
-import { createBackgroundLayer, createSpriteLayer } from '../layers'
 import { Matrix } from '../Classes/Math'
 import { SpriteSheet } from '../Classes/SpriteSheet'
 import { EntityFactories } from '../entities'
+import { createBackgroundLayer } from '../layers/BackgroundLayer'
+import { createSpriteLayer } from '../layers/SpriteLayer'
 
 function* expandSpan (xStart: number, xLength: number, yStart: number, yLength: number) {
     const xEnd = xStart + xLength

@@ -3,10 +3,10 @@ import { Timer } from './ts/Classes/Timer'
 import { setupInputHandler } from './ts/input'
 import { Camera } from './ts/Classes/Camera'
 import { createLevelLoader } from './ts/loaders/levelLoader'
-import { createCollisionLayer } from './ts/layers'
 import { loadEntities } from './ts/entities'
 import { Entity } from './ts/Classes/Entity'
 import { PlayerController } from './ts/Traits/PlayerController'
+import { createCollisionLayer } from './ts/layers/CollisionLayer'
 
 const createPlayerEnvironment = (playerEntity: Entity) => {
     const playerEnvironment = new Entity()
